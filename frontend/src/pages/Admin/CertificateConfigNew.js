@@ -12,7 +12,7 @@ const CertificateConfigNew = () => {
   // State
   const [event, setEvent] = useState(null);
   const [certificateImage, setCertificateImage] = useState(null);
-  const [templateFile, setTemplateFile] = useState(null);
+  // const [templateFile, setTemplateFile] = useState(null);
   const [activeField, setActiveField] = useState('name');
   const [loading, setLoading] = useState(true);
   
@@ -31,6 +31,7 @@ const CertificateConfigNew = () => {
 
   useEffect(() => {
     fetchEvent();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventId]);
 
   useEffect(() => {
@@ -38,6 +39,7 @@ const CertificateConfigNew = () => {
       imgRef.current.src = certificateImage;
       imgRef.current.onload = drawPreview;
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [certificateImage, nameSettings, eventSettings, dateSettings]);
 
   const fetchEvent = async () => {
@@ -81,7 +83,7 @@ const CertificateConfigNew = () => {
       return;
     }
 
-    setTemplateFile(file);
+    // setTemplateFile(file);
     const reader = new FileReader();
     reader.onload = (ev) => setCertificateImage(ev.target.result);
     reader.readAsDataURL(file);

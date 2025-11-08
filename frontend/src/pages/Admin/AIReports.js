@@ -10,7 +10,6 @@ import {
   CloudArrowDownIcon,
   CheckCircleIcon,
   XCircleIcon,
-  EyeIcon,
   AcademicCapIcon
 } from '@heroicons/react/24/outline';
 
@@ -74,6 +73,7 @@ const AIReports = () => {
 
   useEffect(() => {
     fetchReports();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
 useEffect(() => {

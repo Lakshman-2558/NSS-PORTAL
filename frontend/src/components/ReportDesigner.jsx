@@ -143,7 +143,7 @@ export default function ReportDesigner({ initialData = {}, onPdfGenerated }) {
       }
 
       // Download file
-      const safeTitle = (form.title || 'nss_report').replace(/[^a-z0-9_\-]/gi, '_');
+      const safeTitle = (form.title || 'nss_report').replace(/[^a-z0-9_-]/gi, '_');
       const fileName = `${safeTitle}.pdf`;
       pdf.save(fileName);
 
@@ -226,7 +226,7 @@ export default function ReportDesigner({ initialData = {}, onPdfGenerated }) {
               // if only one image uploaded -> show it as photo
               <img
                 src={files[0].dataUrl}
-                alt="photo"
+                alt="Event"
                 style={{ width: '100%', maxHeight: 300, objectFit: 'cover' }}
               />
             ) : (

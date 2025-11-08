@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSocket } from '../../context/SocketContext';
-import { BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { BellIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 

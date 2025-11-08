@@ -241,6 +241,7 @@ export const SocketProvider = ({ children }) => {
         setUnreadCount(0);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, user, fetchStoredNotifications]);
 
   const markAsRead = async (notificationId) => {

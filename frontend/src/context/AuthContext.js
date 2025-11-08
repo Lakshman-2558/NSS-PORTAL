@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('user');
       setLoading(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const fetchUser = async () => {
