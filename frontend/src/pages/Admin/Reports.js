@@ -24,23 +24,24 @@ const AdminReports = () => {
     loadEvents();
   }, []);
 
-  const downloadEventReport = async (eventId) => {
-    try {
-      const response = await api.get(`/reports/event/${eventId}`, {
-        responseType: 'blob'
-      });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `event-report-${eventId}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      toast.success('Event report downloaded');
-    } catch (error) {
-      toast.error('Failed to download event report');
-    }
-  };
+  // Function kept for potential future use
+  // const downloadEventReport = async (eventId) => {
+  //   try {
+  //     const response = await api.get(`/reports/event/${eventId}`, {
+  //       responseType: 'blob'
+  //     });
+  //     const url = window.URL.createObjectURL(new Blob([response.data]));
+  //     const link = document.createElement('a');
+  //     link.href = url;
+  //     link.setAttribute('download', `event-report-${eventId}.pdf`);
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     link.remove();
+  //     toast.success('Event report downloaded');
+  //   } catch (error) {
+  //     toast.error('Failed to download event report');
+  //   }
+  // };
 
   const downloadAnnualSummary = async (format) => {
     try {

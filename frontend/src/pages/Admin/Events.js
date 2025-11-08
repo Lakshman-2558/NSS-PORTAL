@@ -6,7 +6,6 @@ import {
   PlusIcon,
   PencilIcon,
   TrashIcon,
-  EyeIcon,
   DocumentTextIcon,
   CloudArrowDownIcon,
   ArrowDownTrayIcon,
@@ -62,7 +61,7 @@ const AdminEvents = () => {
 
   const handlePublish = async (id) => {
     try {
-      const response = await api.post(`/events/${id}/publish`);
+      await api.post(`/events/${id}/publish`);
       toast.success('Event published successfully! Notifications sent to all students.');
       fetchEvents();
     } catch (error) {

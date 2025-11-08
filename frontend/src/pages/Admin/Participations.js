@@ -44,10 +44,12 @@ const AdminParticipations = () => {
 
   useEffect(() => {
     loadEvents();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     fetchParticipations();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedEvent, statusFilter]);
 
   useEffect(() => {
