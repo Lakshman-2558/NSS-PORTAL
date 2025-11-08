@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-// Hardcoded for production deployment
+// Hardcoded backend URL for production deployment
+// Updated: 2024-11-08
 const API_BASE_URL = 'https://nss-portal-backend.onrender.com/api';
+console.log('🔗 API Base URL:', API_BASE_URL);
 
 const api = axios.create({
   baseURL: API_BASE_URL,
