@@ -29,6 +29,7 @@ const SubmitReport = () => {
 
   useEffect(() => {
     fetchEvent();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventId]);
 
   const fetchEvent = async () => {
@@ -136,7 +137,7 @@ const SubmitReport = () => {
       doc.setFontSize(12);
       doc.text('Generated via NSS Portal AI assist', 15, cursorY);
 
-      const safeTitle = (formData.title || 'nss_report').replace(/[^a-z0-9_\-]/gi, '_');
+      const safeTitle = (formData.title || 'nss_report').replace(/[^a-z0-9_-]/gi, '_');
       const fileName = `${safeTitle}.pdf`;
 
       doc.save(fileName);
@@ -175,7 +176,7 @@ const SubmitReport = () => {
         data.append('files', file);
       });
 
-      const response = await api.post('/reports/student/submit', data, {
+      await api.post('/reports/student/submit', data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
