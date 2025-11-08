@@ -70,9 +70,8 @@ export const SocketProvider = ({ children }) => {
       console.log('   User Role:', user.role);
       
       // Connect to Socket.IO server
-      // Remove /api suffix for Socket.IO connection
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-      const socketUrl = apiUrl.replace('/api', '');
+      // Hardcoded for production deployment
+      const socketUrl = 'https://nss-portal-backend.onrender.com';
       console.log('   Connecting to:', socketUrl);
       
       const newSocket = io(socketUrl, {
