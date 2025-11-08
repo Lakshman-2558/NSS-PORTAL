@@ -1,0 +1,108 @@
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useForm } from 'react-hook-form';
+
+const Login = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const onSubmit = async (data) => {
+    const result = await login(data.email, data.password);
+    if (result.success) {
+      // Wait a bit for user to be set in context
+      setTimeout(() => {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        const role = user.role || 'student';
+        navigate(`/${role}/dashboard`);
+      }, 100);
+    }
+  };
+
+  return (
+    <div 
+      className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative"
+      style={{
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      {/* Animated overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-orange-500/20"></div>
+      
+      <div className="max-w-md w-full space-y-8 bg-white/95 backdrop-blur-lg p-10 rounded-2xl shadow-2xl border-2 border-blue-100 animate-fadeIn relative z-10">
+        {/* Logo/Icon */}
+        <div className="flex justify-center">
+          <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
+            <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 2.18l8 3.6v8.55c0 4.44-3.07 8.61-7 9.67-3.93-1.06-7-5.23-7-9.67V7.78l6-2.7v13.92h2V4.18z"/>
+            </svg>
+          </div>
+        </div>
+        
+        <div>
+          <h2 className="mt-6 text-center text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
+            Welcome Back
+          </h2>
+          <p className="mt-3 text-center text-base text-gray-600 font-medium">
+            Sign in to access your NSS Portal
+          </p>
+          <p className="mt-2 text-center text-sm text-gray-500">
+            New here?{' '}
+            <Link to="/register" className="font-semibold text-blue-600 hover:text-orange-500 underline-offset-4 hover:underline transition-all duration-300">
+              Create an account
+            </Link>
+          </p>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                Email address
+              </label>
+              <input
+                {...register('email', { required: 'Email is required', pattern: { value: /^\S+@\S+$/i, message: 'Invalid email' } })}
+                type="email"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-200 rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-4 focus:ring-primary-400/20 focus:border-primary-400 hover:border-gray-300 transition-all duration-300"
+                placeholder="Enter your email"
+              />
+              {errors.email && <p className="text-red-500 text-xs mt-1 ml-1">{errors.email.message}</p>}
+            </div>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                Password
+              </label>
+              <input
+                {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters' } })}
+                type="password"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-200 rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-4 focus:ring-primary-400/20 focus:border-primary-400 hover:border-gray-300 transition-all duration-300"
+                placeholder="Enter your password"
+              />
+              {errors.password && <p className="text-red-500 text-xs mt-1 ml-1">{errors.password.message}</p>}
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-3.5 px-4 border border-transparent text-base font-semibold rounded-xl text-white bg-gradient-to-r from-blue-600 to-orange-500 hover:from-blue-700 hover:to-orange-600 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-400/30"
+            >
+              <span className="flex items-center gap-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
+                Sign in to your account
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
+
