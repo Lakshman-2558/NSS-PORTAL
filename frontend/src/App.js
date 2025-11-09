@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -24,19 +24,18 @@ import MyReports from './pages/Student/MyReports';
 import FacultyDashboard from './pages/Faculty/Dashboard';
 import theme from './theme';
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+  const publicRoutes = ['/', '/login', '/register'];
+  const isPublicRoute = publicRoutes.includes(location.pathname);
+
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AuthProvider>
-        <SocketProvider>
-          <Router>
-            <div className="min-h-screen bg-gradient-mesh">
-              <Navbar />
-            <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+    <div className="min-h-screen bg-gradient-mesh">
+      {!isPublicRoute && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
             
             {/* Admin Routes */}
             <Route
@@ -139,10 +138,21 @@ function App() {
                 </PrivateRoute>
               }
             />
-          </Routes>
-          <Toaster position="top-right" />
-        </div>
-      </Router>
+      </Routes>
+      <Toaster position="top-right" />
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AuthProvider>
+        <SocketProvider>
+          <Router>
+            <AppContent />
+          </Router>
         </SocketProvider>
       </AuthProvider>
     </ThemeProvider>
