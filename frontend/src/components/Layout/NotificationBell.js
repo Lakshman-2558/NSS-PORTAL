@@ -50,7 +50,7 @@ const NotificationBell = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50 max-h-96 overflow-y-auto">
+        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-md shadow-lg z-50 max-h-96 overflow-y-auto transform -translate-x-0 sm:translate-x-0" style={{ maxWidth: 'calc(100vw - 2rem)' }}>
           <div className="p-4 border-b border-gray-200 flex justify-between items-center">
             <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
             <div className="flex space-x-2">

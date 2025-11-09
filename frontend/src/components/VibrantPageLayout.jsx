@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const VibrantPageLayout = ({ 
   children, 
@@ -9,6 +10,7 @@ const VibrantPageLayout = ({
   showBlog = true,
   counters = null
 }) => {
+  const navigate = useNavigate();
   const [animatedCounters, setAnimatedCounters] = useState({
     volunteers: 0,
     camps: 0,
@@ -185,7 +187,10 @@ const VibrantPageLayout = ({
                   ))}
                 </div>
 
-                <button className="w-full mt-6 bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300">
+                <button 
+                  onClick={() => navigate('/student/events')}
+                  className="w-full mt-6 bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                >
                   View All Activities →
                 </button>
               </div>
