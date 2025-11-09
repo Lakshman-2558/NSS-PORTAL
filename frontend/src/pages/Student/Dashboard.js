@@ -48,21 +48,43 @@ const StudentDashboard = () => {
 
   const handleDownloadCertificate = async (cert) => {
     try {
-      // Certificate URL is now a full URL from backend
-      const response = await fetch(cert.certificate.url);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `Certificate_${cert.event.title.replace(/\s+/g, '_')}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      toast.success('Certificate downloaded!');
+      // For mobile browsers, open in new tab instead of downloading
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        // On mobile, open the certificate in a new tab
+        window.open(cert.certificate.url, '_blank');
+        toast.success('Certificate opened in new tab!');
+      } else {
+        // On desktop, download the certificate
+        const response = await fetch(cert.certificate.url, {
+          mode: 'cors',
+          headers: {
+            'Accept': 'image/png,image/*'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch certificate');
+        }
+        
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Certificate_${cert.event.title.replace(/\s+/g, '_')}.png`;
+        link.setAttribute('download', `Certificate_${cert.event.title.replace(/\s+/g, '_')}.png`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        toast.success('Certificate downloaded!');
+      }
     } catch (error) {
       console.error('Download error:', error);
-      toast.error('Failed to download certificate');
+      // Fallback: open in new tab
+      window.open(cert.certificate.url, '_blank');
+      toast.info('Certificate opened in new tab');
     }
   };
 
