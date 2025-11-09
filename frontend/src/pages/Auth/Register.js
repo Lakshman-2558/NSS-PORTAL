@@ -34,7 +34,7 @@ const Register = () => {
       {/* Animated overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-600/20 via-blue-600/20 to-orange-500/20"></div>
       
-      <div className="max-w-md w-full space-y-8 bg-white/95 backdrop-blur-lg p-10 rounded-2xl shadow-2xl border-2 border-green-100 animate-fadeIn relative z-10">
+      <div className="max-w-md w-full space-y-8 bg-white/30 backdrop-blur-xl p-8 sm:p-10 rounded-2xl shadow-2xl border border-white/50 animate-fadeIn relative z-10">
         {/* Logo */}
         <div className="flex justify-center">
           <div className="w-24 h-24 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
@@ -70,7 +70,7 @@ const Register = () => {
                 {...register('name', { required: 'Name is required' })}
                 type="text"
                 placeholder="Enter your full name"
-                className="mt-1 appearance-none relative block w-full px-4 py-3 border-2 border-gray-200 placeholder-gray-400 text-gray-900 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-400/20 focus:border-green-400 hover:border-gray-300 transition-all duration-300"
+                className="mt-1 appearance-none relative block w-full px-4 py-3 border-2 border-white/50 bg-white placeholder-gray-400 text-gray-900 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-400/30 focus:border-green-400 hover:border-white/70 transition-all duration-300 shadow-sm"
               />
               {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
             </div>
@@ -83,7 +83,7 @@ const Register = () => {
                 {...register('email', { required: 'Email is required', pattern: { value: /^\S+@\S+$/i, message: 'Invalid email' } })}
                 type="email"
                 placeholder="Enter your email"
-                className="mt-1 appearance-none relative block w-full px-4 py-3 border-2 border-gray-200 placeholder-gray-400 text-gray-900 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-400/20 focus:border-green-400 hover:border-gray-300 transition-all duration-300"
+                className="mt-1 appearance-none relative block w-full px-4 py-3 border-2 border-white/50 bg-white placeholder-gray-400 text-gray-900 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-400/30 focus:border-green-400 hover:border-white/70 transition-all duration-300 shadow-sm"
               />
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
             </div>
@@ -96,7 +96,7 @@ const Register = () => {
                 {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters' } })}
                 type="password"
                 placeholder="Enter your password"
-                className="mt-1 appearance-none relative block w-full px-4 py-3 border-2 border-gray-200 placeholder-gray-400 text-gray-900 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-400/20 focus:border-green-400 hover:border-gray-300 transition-all duration-300"
+                className="mt-1 appearance-none relative block w-full px-4 py-3 border-2 border-white/50 bg-white placeholder-gray-400 text-gray-900 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-400/30 focus:border-green-400 hover:border-white/70 transition-all duration-300 shadow-sm"
               />
               {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
             </div>
@@ -107,7 +107,7 @@ const Register = () => {
               </label>
               <select
                 {...register('role', { required: 'Role is required' })}
-                className="mt-1 block w-full px-4 py-3 border-2 border-gray-200 bg-white rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-green-400/20 focus:border-green-400 hover:border-gray-300 transition-all duration-300"
+                className="mt-1 block w-full px-4 py-3 border-2 border-white/50 bg-white rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-green-400/30 focus:border-green-400 hover:border-white/70 transition-all duration-300"
               >
                 <option value="">Select role</option>
                 <option value="student">Student</option>

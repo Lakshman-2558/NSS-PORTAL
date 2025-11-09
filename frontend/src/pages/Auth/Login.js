@@ -33,7 +33,7 @@ const Login = () => {
       {/* Animated overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-orange-500/20"></div>
       
-      <div className="max-w-md w-full space-y-8 bg-white/95 backdrop-blur-lg p-10 rounded-2xl shadow-2xl border-2 border-blue-100 animate-fadeIn relative z-10">
+      <div className="max-w-md w-full space-y-8 bg-white/30 backdrop-blur-xl p-8 sm:p-10 rounded-2xl shadow-2xl border border-white/50 animate-fadeIn relative z-10">
         {/* Logo */}
         <div className="flex justify-center">
           <div className="w-24 h-24 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
@@ -68,7 +68,7 @@ const Login = () => {
               <input
                 {...register('email', { required: 'Email is required', pattern: { value: /^\S+@\S+$/i, message: 'Invalid email' } })}
                 type="email"
-                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-200 rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-4 focus:ring-primary-400/20 focus:border-primary-400 hover:border-gray-300 transition-all duration-300"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-white/50 bg-white rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-400/30 focus:border-blue-400 hover:border-white/70 transition-all duration-300 shadow-sm"
                 placeholder="Enter your email"
               />
               {errors.email && <p className="text-red-500 text-xs mt-1 ml-1">{errors.email.message}</p>}
@@ -80,7 +80,7 @@ const Login = () => {
               <input
                 {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters' } })}
                 type="password"
-                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-200 rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-4 focus:ring-primary-400/20 focus:border-primary-400 hover:border-gray-300 transition-all duration-300"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-white/50 bg-white rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-400/30 focus:border-blue-400 hover:border-white/70 transition-all duration-300 shadow-sm"
                 placeholder="Enter your password"
               />
               {errors.password && <p className="text-red-500 text-xs mt-1 ml-1">{errors.password.message}</p>}
