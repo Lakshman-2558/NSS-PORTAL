@@ -30,15 +30,15 @@ function AppContent() {
   const location = useLocation();
   const publicRoutes = ['/', '/login', '/register'];
   const isPublicRoute = publicRoutes.includes(location.pathname);
-  const [showAnimation, setShowAnimation] = useState(true);
+  const [showAnimation, setShowAnimation] = useState(false);
 
   useEffect(() => {
-    // Check if animation has been shown in this session
+    // Only check on initial mount, not on route changes
     const hasSeenAnimation = sessionStorage.getItem('hasSeenAnimation');
-    if (hasSeenAnimation) {
-      setShowAnimation(false);
+    if (!hasSeenAnimation) {
+      setShowAnimation(true);
     }
-  }, []);
+  }, []); // Empty dependency array - only run once on mount
 
   const handleAnimationComplete = () => {
     sessionStorage.setItem('hasSeenAnimation', 'true');

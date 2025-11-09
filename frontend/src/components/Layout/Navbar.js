@@ -22,34 +22,44 @@ const Navbar = () => {
 
   // Animate navbar on mount
   useEffect(() => {
+    // Set initial opacity to 0 before animating
     if (navRef.current) {
+      navRef.current.style.opacity = '0';
+      
       anime({
         targets: navRef.current,
-        translateY: [-100, 0],
+        translateY: [-50, 0],
         opacity: [0, 1],
-        duration: 800,
+        duration: 600,
         easing: 'easeOutExpo'
       });
     }
 
     if (logoRef.current) {
+      logoRef.current.style.opacity = '0';
+      
       anime({
         targets: logoRef.current,
-        scale: [0, 1],
-        rotate: [180, 0],
-        duration: 1000,
-        delay: 200,
-        easing: 'easeOutElastic(1, .6)'
+        scale: [0.8, 1],
+        opacity: [0, 1],
+        duration: 600,
+        delay: 100,
+        easing: 'easeOutQuad'
       });
     }
 
     // Animate nav links
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+      link.style.opacity = '0';
+    });
+    
     anime({
       targets: '.nav-link',
-      translateX: [-30, 0],
+      translateX: [-20, 0],
       opacity: [0, 1],
-      delay: anime.stagger(80, {start: 400}),
-      duration: 600,
+      delay: anime.stagger(60, {start: 200}),
+      duration: 400,
       easing: 'easeOutQuad'
     });
   }, []);
@@ -106,13 +116,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav ref={navRef} className="bg-white dark:bg-gray-800 shadow-lg border-b-2 border-gradient-to-r from-primary-500 to-secondary-500 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95 transition-colors duration-300" style={{opacity: 0}}>
+    <nav ref={navRef} className="bg-white dark:bg-gray-800 shadow-lg border-b-2 border-gradient-to-r from-primary-500 to-secondary-500 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <h1 ref={logoRef} className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-400 bg-clip-text text-transparent hover:scale-110 transition-transform duration-300 cursor-pointer" style={{opacity: 0}}>
+              <h1 ref={logoRef} className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-400 bg-clip-text text-transparent hover:scale-110 transition-transform duration-300 cursor-pointer">
                 NSS Portal
               </h1>
             </div>
@@ -126,7 +136,6 @@ const Navbar = () => {
                     key={link.path}
                     to={link.path}
                     className="nav-link inline-flex items-center px-4 py-2 mx-1 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gradient-to-r hover:from-primary-50 hover:to-secondary-50 dark:hover:from-primary-900/30 dark:hover:to-secondary-900/30 transition-all duration-300 relative group shadow-sm hover:shadow-md"
-                    style={{opacity: 0}}
                     onMouseEnter={handleNavLinkHover}
                     onMouseLeave={handleNavLinkLeave}
                   >
