@@ -9,6 +9,7 @@ import {
   DocumentTextIcon
 } from '@heroicons/react/24/outline';
 import VibrantPageLayout from '../../components/VibrantPageLayout';
+import anime from 'animejs/lib/anime.es.js';
 
 const StudentDashboard = () => {
   const [user, setUser] = useState(null);
@@ -19,6 +20,54 @@ const StudentDashboard = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Animate dashboard elements after data loads
+  useEffect(() => {
+    if (!loading && user) {
+      // Animate stats cards with stagger
+      anime({
+        targets: '.stat-card',
+        scale: [0.8, 1],
+        opacity: [0, 1],
+        translateY: [30, 0],
+        delay: anime.stagger(100),
+        duration: 600,
+        easing: 'easeOutElastic(1, .8)'
+      });
+
+      // Animate quick action cards
+      anime({
+        targets: '.action-card',
+        scale: [0.9, 1],
+        opacity: [0, 1],
+        rotateY: [-20, 0],
+        delay: anime.stagger(80, {start: 300}),
+        duration: 500,
+        easing: 'easeOutQuad'
+      });
+
+      // Animate participation cards
+      anime({
+        targets: '.participation-card',
+        translateX: [-50, 0],
+        opacity: [0, 1],
+        delay: anime.stagger(100, {start: 500}),
+        duration: 600,
+        easing: 'easeOutCubic'
+      });
+
+      // Animate certificate cards
+      anime({
+        targets: '.certificate-card',
+        scale: [0.8, 1],
+        opacity: [0, 1],
+        rotate: [-5, 0],
+        delay: anime.stagger(120, {start: 700}),
+        duration: 700,
+        easing: 'easeOutElastic(1, .6)'
+      });
+    }
+  }, [loading, user]);
 
   const fetchData = async () => {
     try {
@@ -161,7 +210,7 @@ const StudentDashboard = () => {
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <div key={stat.title} className="bg-white overflow-hidden shadow-soft hover:shadow-xl rounded-2xl border border-gray-100/50 transition-all duration-300 hover:-translate-y-1 group">
+            <div key={stat.title} className="stat-card bg-white dark:bg-gray-800 overflow-hidden shadow-soft hover:shadow-xl rounded-2xl border border-gray-100/50 dark:border-gray-700 transition-all duration-300 hover:-translate-y-1 group" style={{opacity: 0}}>
               <div className="p-6">
                 <div className="flex items-center">
                   <div className={`${stat.color} rounded-xl p-3.5 bg-gradient-to-br shadow-lg group-hover:scale-110 transition-transform duration-300`}>
@@ -193,13 +242,15 @@ const StudentDashboard = () => {
           <div className="space-y-3">
             <Link
               to="/student/events"
-              className="block w-full text-left px-5 py-3.5 bg-gradient-to-r from-primary-50 to-primary-100 hover:from-primary-100 hover:to-primary-200 rounded-xl text-primary-700 font-medium transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md"
+              className="action-card block w-full text-left px-5 py-3.5 bg-gradient-to-r from-primary-50 to-primary-100 hover:from-primary-100 hover:to-primary-200 rounded-xl text-primary-700 font-medium transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md"
+              style={{opacity: 0}}
             >
               📅 Browse Events
             </Link>
             <Link
               to="/student/profile"
-              className="block w-full text-left px-5 py-3.5 bg-gradient-to-r from-secondary-50 to-secondary-100 hover:from-secondary-100 hover:to-secondary-200 rounded-xl text-secondary-700 font-medium transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md"
+              className="action-card block w-full text-left px-5 py-3.5 bg-gradient-to-r from-secondary-50 to-secondary-100 hover:from-secondary-100 hover:to-secondary-200 rounded-xl text-secondary-700 font-medium transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md"
+              style={{opacity: 0}}
             >
               👤 View My Profile
             </Link>
@@ -213,7 +264,7 @@ const StudentDashboard = () => {
           </h2>
           <div className="space-y-3">
             {participations.slice(0, 5).map((participation) => (
-              <div key={participation._id} className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100/50 rounded-xl hover:from-gray-100 hover:to-gray-200/50 transition-all duration-300">
+              <div key={participation._id} className="participation-card flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100/50 dark:from-gray-700 dark:to-gray-800 rounded-xl hover:from-gray-100 hover:to-gray-200/50 dark:hover:from-gray-600 dark:hover:to-gray-700 transition-all duration-300" style={{opacity: 0}}>
                 <div>
                   <p className="text-sm font-semibold text-gray-900">
                     {participation.event?.title}
@@ -249,7 +300,7 @@ const StudentDashboard = () => {
         {certificates.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {certificates.map((cert) => (
-              <div key={cert.id} className="border-2 border-gray-100 rounded-2xl p-5 hover:shadow-xl hover:border-purple-200 transition-all duration-300 bg-gradient-to-br from-white to-purple-50/30 group hover:-translate-y-1">
+              <div key={cert.id} className="certificate-card border-2 border-gray-100 dark:border-gray-700 rounded-2xl p-5 hover:shadow-xl hover:border-purple-200 dark:hover:border-purple-600 transition-all duration-300 bg-gradient-to-br from-white to-purple-50/30 dark:from-gray-800 dark:to-purple-900/20 group hover:-translate-y-1" style={{opacity: 0}}>
                 <div className="flex items-start justify-between mb-3">
                   <div className="p-2.5 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl shadow-md group-hover:scale-110 transition-transform duration-300">
                     <DocumentTextIcon className="h-6 w-6 text-white" />

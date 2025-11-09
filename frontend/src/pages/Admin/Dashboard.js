@@ -7,6 +7,7 @@ import {
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
 import VibrantPageLayout from '../../components/VibrantPageLayout';
+import anime from 'animejs/lib/anime.es.js';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
@@ -15,6 +16,37 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchStats();
   }, []);
+
+  // Animate dashboard elements after data loads
+  useEffect(() => {
+    if (!loading && stats) {
+      // Animate stat cards with stagger and bounce
+      anime({
+        targets: '.admin-stat-card',
+        scale: [0.5, 1],
+        opacity: [0, 1],
+        translateY: [60, 0],
+        rotate: [10, 0],
+        delay: anime.stagger(120),
+        duration: 800,
+        easing: 'easeOutElastic(1, .7)'
+      });
+
+      // Add pulsing glow effect to cards
+      anime({
+        targets: '.admin-stat-card',
+        boxShadow: [
+          '0 4px 6px rgba(0,0,0,0.1)',
+          '0 20px 40px rgba(59, 130, 246, 0.3)',
+          '0 4px 6px rgba(0,0,0,0.1)'
+        ],
+        duration: 2000,
+        delay: anime.stagger(150, {start: 800}),
+        easing: 'easeInOutQuad',
+        loop: true
+      });
+    }
+  }, [loading, stats]);
 
   const fetchStats = async () => {
     try {
@@ -100,18 +132,18 @@ const AdminDashboard = () => {
         {statCards.map((stat) => {
           const Icon = stat.icon;
           return (
-            <div key={stat.title} className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
+            <div key={stat.title} className="admin-stat-card bg-gradient-to-br from-white to-blue-50 dark:from-gray-800 dark:to-blue-900/20 overflow-hidden shadow-xl rounded-2xl border-2 border-blue-100 dark:border-blue-900 hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300 transform hover:-translate-y-2 hover:scale-105" style={{opacity: 0}}>
+              <div className="p-6">
                 <div className="flex items-center">
-                  <div className={`${stat.color} rounded-md p-3`}>
-                    <Icon className="h-6 w-6 text-white" />
+                  <div className={`${stat.color} rounded-xl p-4 shadow-lg transform transition-transform duration-300 hover:rotate-12 hover:scale-110`}>
+                    <Icon className="h-7 w-7 text-white" />
                   </div>
                   <div className="ml-5 w-0 flex-1">
                     <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
+                      <dt className="text-sm font-bold text-gray-600 dark:text-gray-300 truncate uppercase tracking-wide">
                         {stat.title}
                       </dt>
-                      <dd className="text-lg font-semibold text-gray-900">
+                      <dd className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mt-1">
                         {stat.value}
                       </dd>
                     </dl>
