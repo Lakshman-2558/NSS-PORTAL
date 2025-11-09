@@ -6,6 +6,7 @@ import {
   ChevronRightIcon
 } from '@heroicons/react/24/outline';
 import ImageSlider from '../components/ImageSlider';
+import api from '../utils/api';
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -29,16 +30,14 @@ const Landing = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await fetch('/api/stats/landing');
-        if (response.ok) {
-          const data = await response.json();
-          setStats({
-            volunteers: data.totalStudents || 0,
-            events: data.totalEvents || 0,
-            institutions: data.totalInstitutions || 1,
-            hours: data.totalHours || 0
-          });
-        }
+        const response = await api.get('/stats/landing');
+        const data = response.data;
+        setStats({
+          volunteers: data.totalStudents || 0,
+          events: data.totalEvents || 0,
+          institutions: data.totalInstitutions || 1,
+          hours: data.totalHours || 0
+        });
       } catch (error) {
         console.error('Error fetching statistics:', error);
         // Fallback to default values
