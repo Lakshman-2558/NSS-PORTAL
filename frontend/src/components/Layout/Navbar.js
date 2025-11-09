@@ -22,7 +22,7 @@ const Navbar = () => {
 
   // Animate navbar on mount
   useEffect(() => {
-    // Set initial opacity to 0 before animating
+ 
     if (navRef.current) {
       navRef.current.style.opacity = '0';
       

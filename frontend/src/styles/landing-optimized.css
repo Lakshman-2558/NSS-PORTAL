@@ -1,0 +1,335 @@
+/* ========================================
+   OPTIMIZED LANDING PAGE CSS
+   GPU-Accelerated for 60 FPS Performance
+   ======================================== */
+
+/* GPU Acceleration - Force hardware acceleration */
+.gpu-accelerated,
+.landing-container,
+.landing-header,
+.feature-card,
+.stat-card,
+.cta-button {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* BEFORE: background-attachment: fixed (MAJOR LAG)
+   AFTER: Static gradient with pseudo-element */
+.landing-container {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.landing-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #eff6ff 0%, #ffffff 50%, #fff7ed 100%);
+  z-index: -1;
+  will-change: transform;
+  transform: translateZ(-1px) scale(1.1);
+}
+
+.dark .landing-container::before {
+  background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%);
+}
+
+/* Header - Optimized with GPU acceleration */
+.landing-header {
+  background-color: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  border-bottom: 4px solid #f97316;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.dark .landing-header {
+  background-color: #1f2937;
+  border-bottom-color: #ea580c;
+}
+
+/* BEFORE: box-shadow transitions (MODERATE LAG)
+   AFTER: Use transform and opacity only */
+.feature-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border-top: 4px solid;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s ease;
+}
+
+.feature-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px) translateZ(0);
+}
+
+.feature-card:hover::after {
+  opacity: 1;
+}
+
+.feature-card-blue { border-top-color: #3b82f6; }
+.feature-card-orange { border-top-color: #f97316; }
+.feature-card-green { border-top-color: #10b981; }
+
+/* Feature Icons - GPU Optimized */
+.feature-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.feature-icon-blue { background-color: #dbeafe; }
+.feature-icon-orange { background-color: #ffedd5; }
+.feature-icon-green { background-color: #d1fae5; }
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.1) rotate(5deg) translateZ(0);
+}
+
+/* CTA Buttons - Optimized */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cta-button:hover::before {
+  opacity: 1;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px) translateZ(0);
+}
+
+.cta-button:active {
+  transform: translateY(0) scale(0.98) translateZ(0);
+}
+
+.cta-primary {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: white;
+  box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.3);
+}
+
+.cta-secondary {
+  background: white;
+  color: #2563eb;
+  border: 2px solid #2563eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Statistics Section - GPU Optimized */
+.stats-section {
+  margin-top: 4rem;
+  background-color: white;
+  border-radius: 1rem;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #dbeafe;
+}
+
+.dark .stats-section {
+  background-color: #1f2937;
+  border-color: #1e3a8a;
+}
+
+.stats-background {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #eff6ff 0%, #ffedd5 50%, #eff6ff 100%);
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.dark .stats-background {
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(124, 58, 237, 0.2) 50%, rgba(194, 65, 12, 0.2) 100%);
+}
+
+/* Stat Cards - Optimized with transform only */
+.stat-card {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.stat-card:hover {
+  transform: scale(1.05) translateZ(0);
+}
+
+.stat-card:hover::after {
+  opacity: 1;
+}
+
+.stat-card-blue {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+}
+
+.stat-card-green {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+}
+
+.stat-card-orange {
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+}
+
+.stat-card-purple {
+  background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+}
+
+/* Progress Bars - GPU Optimized */
+.stat-progress {
+  margin-top: 0.5rem;
+  height: 0.25rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.stat-progress-bar {
+  height: 100%;
+  border-radius: 9999px;
+  animation: progressAnimation 2s ease-out forwards;
+  transform: translateZ(0);
+}
+
+@keyframes progressAnimation {
+  from {
+    transform: translateX(-100%) translateZ(0);
+  }
+  to {
+    transform: translateX(0) translateZ(0);
+  }
+}
+
+.stat-progress-blue { background-color: #2563eb; }
+.stat-progress-green { background-color: #059669; }
+.stat-progress-orange { background-color: #ea580c; }
+.stat-progress-purple { background-color: #7c3aed; }
+
+/* Smooth Scrolling - Optimized */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+/* Remove scroll-behavior from all elements to prevent conflicts */
+* {
+  scroll-behavior: auto;
+}
+
+/* Optimize images for performance */
+img {
+  content-visibility: auto;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Lazy loading optimization */
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+img[loading="lazy"].loaded {
+  opacity: 1;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .feature-card:hover {
+    transform: translateY(-4px) translateZ(0);
+  }
+  
+  .stat-card:hover {
+    transform: scale(1.02) translateZ(0);
+  }
+  
+  .cta-button:hover {
+    transform: translateY(-1px) translateZ(0);
+  }
+}
+
+/* Containment for better performance */
+.feature-card,
+.stat-card {
+  contain: layout style paint;
+}
+
+/* Content visibility for off-screen elements */
+.stats-section,
+.feature-card {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
