@@ -121,7 +121,7 @@ const Landing = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50">
       {/* Header Section */}
       <header className="bg-white shadow-md border-b-4 border-orange-500">
-        <div className="container mx-auto px-4 py-4">
+        <div className="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-3 sm:py-4">
           <div className="flex items-center justify-between">
             {/* Left Section - Government Logos */}
             <div className="flex items-center space-x-4">
@@ -304,76 +304,76 @@ const Landing = () => {
         </div>
 
         {/* Statistics Section - Dynamic Animated */}
-        <div className="mt-16 bg-white rounded-2xl p-8 lg:p-12 shadow-2xl relative overflow-hidden border-2 border-blue-100">
+        <div className="mt-8 sm:mt-12 lg:mt-16 bg-white rounded-2xl p-4 sm:p-6 lg:p-12 shadow-2xl relative overflow-hidden border-2 border-blue-100">
           {/* Animated background effect */}
           <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-orange-50 to-blue-50 opacity-50"></div>
           
           <div className="relative z-10">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-6 sm:mb-8 animate-fade-in bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-4 sm:mb-6 lg:mb-8 animate-fade-in bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
               Our Impact in Numbers
             </h2>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 text-center">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 text-center">
               {/* Active Volunteers */}
-              <div className="transform hover:scale-110 transition-all duration-300 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-xl p-6 shadow-lg hover:shadow-xl">
-                <div className="flex items-center justify-center mb-2">
-                  <svg className="w-8 h-8 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+              <div className="transform hover:scale-105 md:hover:scale-110 transition-all duration-300 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-lg hover:shadow-xl">
+                <div className="flex items-center justify-center mb-1 sm:mb-2">
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                   </svg>
                 </div>
-                <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-blue-600">
+                <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-1 sm:mb-2 text-blue-600">
                   {counters.volunteers.toLocaleString()}+
                 </div>
                 <div className="text-blue-700 text-xs sm:text-sm lg:text-base font-medium">Active Volunteers</div>
-                <div className="mt-2 h-1 bg-blue-200 rounded-full overflow-hidden">
+                <div className="mt-1 sm:mt-2 h-0.5 sm:h-1 bg-blue-200 rounded-full overflow-hidden">
                   <div className="h-full bg-blue-600 rounded-full animate-progress" style={{width: '100%'}}></div>
                 </div>
               </div>
 
               {/* Events Conducted */}
-              <div className="transform hover:scale-110 transition-all duration-300 bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 rounded-xl p-6 shadow-lg hover:shadow-xl">
-                <div className="flex items-center justify-center mb-2">
-                  <svg className="w-8 h-8 mr-2 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+              <div className="transform hover:scale-105 md:hover:scale-110 transition-all duration-300 bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-lg hover:shadow-xl">
+                <div className="flex items-center justify-center mb-1 sm:mb-2">
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-green-600" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
                   </svg>
                 </div>
-                <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-green-600">
+                <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-1 sm:mb-2 text-green-600">
                   {counters.events.toLocaleString()}+
                 </div>
                 <div className="text-green-700 text-xs sm:text-sm lg:text-base font-medium">Events Conducted</div>
-                <div className="mt-2 h-1 bg-green-200 rounded-full overflow-hidden">
+                <div className="mt-1 sm:mt-2 h-0.5 sm:h-1 bg-green-200 rounded-full overflow-hidden">
                   <div className="h-full bg-green-600 rounded-full animate-progress" style={{width: '100%'}}></div>
                 </div>
               </div>
 
               {/* Institutions */}
-              <div className="transform hover:scale-110 transition-all duration-300 bg-gradient-to-br from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 rounded-xl p-6 shadow-lg hover:shadow-xl">
-                <div className="flex items-center justify-center mb-2">
-                  <svg className="w-8 h-8 mr-2 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+              <div className="transform hover:scale-105 md:hover:scale-110 transition-all duration-300 bg-gradient-to-br from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-lg hover:shadow-xl">
+                <div className="flex items-center justify-center mb-1 sm:mb-2">
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
                   </svg>
                 </div>
-                <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-orange-600">
+                <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-1 sm:mb-2 text-orange-600">
                   {counters.institutions.toLocaleString()}+
                 </div>
                 <div className="text-orange-700 text-xs sm:text-sm lg:text-base font-medium">Institutions</div>
-                <div className="mt-2 h-1 bg-orange-200 rounded-full overflow-hidden">
+                <div className="mt-1 sm:mt-2 h-0.5 sm:h-1 bg-orange-200 rounded-full overflow-hidden">
                   <div className="h-full bg-orange-600 rounded-full animate-progress" style={{width: '100%'}}></div>
                 </div>
               </div>
 
               {/* Hours of Service */}
-              <div className="transform hover:scale-110 transition-all duration-300 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-xl p-6 shadow-lg hover:shadow-xl">
-                <div className="flex items-center justify-center mb-2">
-                  <svg className="w-8 h-8 mr-2 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+              <div className="transform hover:scale-105 md:hover:scale-110 transition-all duration-300 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-lg hover:shadow-xl">
+                <div className="flex items-center justify-center mb-1 sm:mb-2">
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
                   </svg>
                 </div>
-                <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-purple-600">
+                <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-1 sm:mb-2 text-purple-600">
                   {counters.hours.toLocaleString()}+
                 </div>
                 <div className="text-purple-700 text-xs sm:text-sm lg:text-base font-medium">Hours of Service</div>
-                <div className="mt-2 h-1 bg-purple-200 rounded-full overflow-hidden">
+                <div className="mt-1 sm:mt-2 h-0.5 sm:h-1 bg-purple-200 rounded-full overflow-hidden">
                   <div className="h-full bg-purple-600 rounded-full animate-progress" style={{width: '100%'}}></div>
                 </div>
               </div>
@@ -383,9 +383,9 @@ const Landing = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-black shadow-md border-t-4 border-orange-500 mt-16 py-8">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+      <footer className="bg-black shadow-md border-t-4 border-orange-500 mt-8 sm:mt-12 lg:mt-16 py-6 sm:py-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-start">
             {/* Left - Logo */}
             <div className="flex justify-center md:justify-start">
               <img 
