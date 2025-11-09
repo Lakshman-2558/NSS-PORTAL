@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider } from '@mui/material/styles';
@@ -8,6 +8,7 @@ import { SocketProvider } from './context/SocketContext';
 import { ThemeProvider as CustomThemeProvider } from './context/ThemeContext';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Layout/Navbar';
+import OpeningAnimation from './components/OpeningAnimation';
 import Landing from './pages/Landing';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
@@ -29,6 +30,24 @@ function AppContent() {
   const location = useLocation();
   const publicRoutes = ['/', '/login', '/register'];
   const isPublicRoute = publicRoutes.includes(location.pathname);
+  const [showAnimation, setShowAnimation] = useState(true);
+
+  useEffect(() => {
+    // Check if animation has been shown in this session
+    const hasSeenAnimation = sessionStorage.getItem('hasSeenAnimation');
+    if (hasSeenAnimation) {
+      setShowAnimation(false);
+    }
+  }, []);
+
+  const handleAnimationComplete = () => {
+    sessionStorage.setItem('hasSeenAnimation', 'true');
+    setShowAnimation(false);
+  };
+
+  if (showAnimation) {
+    return <OpeningAnimation onComplete={handleAnimationComplete} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-mesh">
