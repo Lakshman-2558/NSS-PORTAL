@@ -1,6 +1,6 @@
 /* Responsive Button Utilities */
 .btn-responsive {
-  @apply px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 text-sm sm:text-base;
+  @apply px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base;
 }
 
 .btn-responsive-sm {
