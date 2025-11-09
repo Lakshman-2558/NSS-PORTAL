@@ -751,6 +751,7 @@ useEffect(() => {
                         href={file.url}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() => console.log('Opening file:', file.url)}
                         className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-lg hover:bg-gray-100"
                       >
                         <DocumentTextIcon className="h-5 w-5 text-gray-400" />
