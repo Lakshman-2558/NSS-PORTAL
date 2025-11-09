@@ -39,9 +39,6 @@
   transform: translateZ(-1px) scale(1.1);
 }
 
-.dark .landing-container::before {
-  background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%);
-}
 
 /* Header - Optimized with GPU acceleration */
 .landing-header {
@@ -54,10 +51,6 @@
   z-index: 50;
 }
 
-.dark .landing-header {
-  background-color: #1f2937;
-  border-bottom-color: #ea580c;
-}
 
 /* BEFORE: box-shadow transitions (MODERATE LAG)
    AFTER: Use transform and opacity only */
@@ -176,21 +169,12 @@
   border: 2px solid #dbeafe;
 }
 
-.dark .stats-section {
-  background-color: #1f2937;
-  border-color: #1e3a8a;
-}
-
 .stats-background {
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg, #eff6ff 0%, #ffedd5 50%, #eff6ff 100%);
   opacity: 0.5;
   z-index: 0;
-}
-
-.dark .stats-background {
-  background: linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(124, 58, 237, 0.2) 50%, rgba(194, 65, 12, 0.2) 100%);
 }
 
 /* Stat Cards - Optimized with transform only */

@@ -116,7 +116,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav ref={navRef} className="bg-white dark:bg-gray-800 shadow-lg border-b-2 border-gradient-to-r from-primary-500 to-secondary-500 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95 transition-colors duration-300">
+    <nav ref={navRef} className="bg-white shadow-lg border-b-2 border-gradient-to-r from-primary-500 to-secondary-500 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}
@@ -135,7 +135,7 @@ const Navbar = () => {
                   <Link
                     key={link.path}
                     to={link.path}
-                    className="nav-link inline-flex items-center px-4 py-2 mx-1 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gradient-to-r hover:from-primary-50 hover:to-secondary-50 dark:hover:from-primary-900/30 dark:hover:to-secondary-900/30 transition-all duration-300 relative group shadow-sm hover:shadow-md"
+                    className="nav-link inline-flex items-center px-4 py-2 mx-1 rounded-xl text-sm font-semibold text-gray-700 hover:text-primary-600 hover:bg-gradient-to-r hover:from-primary-50 hover:to-secondary-50 transition-all duration-300 relative group shadow-sm hover:shadow-md"
                     onMouseEnter={handleNavLinkHover}
                     onMouseLeave={handleNavLinkLeave}
                   >
