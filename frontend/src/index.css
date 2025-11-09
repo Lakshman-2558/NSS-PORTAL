@@ -4,6 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import responsive utilities */
+@import './styles/responsive.css';
+
 @layer base {
   * {
     @apply border-gray-200;
@@ -24,12 +27,12 @@
     @apply font-display font-bold tracking-tight;
   }
   
-  h1 { @apply text-4xl md:text-5xl lg:text-6xl; }
-  h2 { @apply text-3xl md:text-4xl lg:text-5xl; }
-  h3 { @apply text-2xl md:text-3xl lg:text-4xl; }
-  h4 { @apply text-xl md:text-2xl lg:text-3xl; }
-  h5 { @apply text-lg md:text-xl lg:text-2xl; }
-  h6 { @apply text-base md:text-lg lg:text-xl; }
+  h1 { @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl; }
+  h2 { @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl; }
+  h3 { @apply text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl; }
+  h4 { @apply text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl; }
+  h5 { @apply text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl; }
+  h6 { @apply text-sm sm:text-base md:text-lg lg:text-xl; }
   
   p {
     @apply leading-relaxed;
@@ -81,27 +84,36 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-gradient-primary text-white font-semibold py-3 px-6 rounded-xl shadow-soft
+    @apply bg-gradient-primary text-white font-semibold px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base rounded-xl shadow-soft
            hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300
            focus:outline-none focus:ring-4 focus:ring-primary-400/30 active:scale-[0.98];
   }
   
   .btn-secondary {
-    @apply bg-gradient-secondary text-white font-semibold py-3 px-6 rounded-xl shadow-soft
+    @apply bg-gradient-secondary text-white font-semibold px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base rounded-xl shadow-soft
            hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300
            focus:outline-none focus:ring-4 focus:ring-secondary-400/30 active:scale-[0.98];
   }
   
   .btn-outline {
-    @apply border-2 border-primary-400 text-primary-600 font-semibold py-3 px-6 rounded-xl
+    @apply border-2 border-primary-400 text-primary-600 font-semibold px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base rounded-xl
            hover:bg-primary-50 hover:border-primary-500 hover:shadow-md transform hover:-translate-y-0.5 
            transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-400/30 active:scale-[0.98];
   }
   
   .btn-ghost {
-    @apply text-gray-600 font-semibold py-3 px-6 rounded-lg
+    @apply text-gray-600 font-semibold px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base rounded-lg
            hover:bg-gray-100 hover:text-gray-900 transition-all duration-200
            focus:outline-none focus:ring-4 focus:ring-gray-500/50 active:scale-95;
+  }
+  
+  /* Responsive button sizes */
+  .btn-sm {
+    @apply px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm;
+  }
+  
+  .btn-lg {
+    @apply px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg;
   }
   
   .card {
@@ -181,6 +193,10 @@
   
   .container-fluid {
     @apply w-full px-4 sm:px-6 lg:px-8 mx-auto;
+  }
+  
+  .container-responsive {
+    @apply w-full px-4 sm:px-6 lg:container lg:mx-auto;
   }
   
   .section {
