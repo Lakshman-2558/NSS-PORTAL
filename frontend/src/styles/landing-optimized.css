@@ -179,10 +179,24 @@
 
 /* Stat Cards - Optimized with transform only */
 .stat-card {
-  padding: 1.5rem;
+  padding: 0.75rem 1rem;
   border-radius: 0.75rem;
   position: relative;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (min-width: 640px) {
+  .stat-card {
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .stat-card {
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+  }
 }
 
 .stat-card::after {
@@ -251,15 +265,41 @@
 .stat-progress-orange { background-color: #ea580c; }
 .stat-progress-purple { background-color: #7c3aed; }
 
-/* Smooth Scrolling - Optimized */
+/* Smooth Scrolling - Optimized for 60 FPS */
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  /* Optimize scrolling performance */
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+}
+
+body {
+  /* Prevent layout shifts during scroll */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* Remove scroll-behavior from all elements to prevent conflicts */
 * {
   scroll-behavior: auto;
+}
+
+/* Optimize all animated elements for GPU */
+.landing-container,
+.landing-header,
+.feature-card,
+.stat-card,
+.cta-button,
+[class*="animate"] {
+  /* Force GPU acceleration */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  /* Optimize rendering */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
 }
 
 /* Optimize images for performance */

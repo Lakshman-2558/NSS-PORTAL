@@ -8,6 +8,7 @@ import {
 import ImageSlider from '../components/ImageSlider';
 import { useFadeIn, useSlideInBottom, useStaggerFadeIn, useScrollReveal } from '../hooks/useAnimations';
 import api from '../utils/api';
+import '../styles/landing-optimized.css';
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -60,34 +61,42 @@ const Landing = () => {
     fetchStats();
   }, []);
 
-  // Animated counter effect
+  // Optimized counter animation with requestAnimationFrame
   useEffect(() => {
-    if (stats.volunteers === 0) return; // Wait for data to load
+    if (stats.volunteers === 0) return;
 
-    const duration = 2000; // 2 seconds
-    const steps = 60;
-    const interval = duration / steps;
+    let startTime = null;
+    let animationFrame;
+    const duration = 2000;
 
-    let currentStep = 0;
+    const animate = (currentTime) => {
+      if (!startTime) startTime = currentTime;
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
 
-    const timer = setInterval(() => {
-      currentStep++;
-      const progress = currentStep / steps;
+      // Easing function for smooth animation
+      const easeOutQuad = progress * (2 - progress);
 
       setCounters({
-        volunteers: Math.floor(stats.volunteers * progress),
-        events: Math.floor(stats.events * progress),
-        institutions: Math.floor(stats.institutions * progress),
-        hours: Math.floor(stats.hours * progress)
+        volunteers: Math.floor(stats.volunteers * easeOutQuad),
+        events: Math.floor(stats.events * easeOutQuad),
+        institutions: Math.floor(stats.institutions * easeOutQuad),
+        hours: Math.floor(stats.hours * easeOutQuad)
       });
 
-      if (currentStep >= steps) {
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      } else {
         setCounters(stats);
-        clearInterval(timer);
       }
-    }, interval);
+    };
 
-    return () => clearInterval(timer);
+    animationFrame = requestAnimationFrame(animate);
+    return () => {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+    };
   }, [stats]);
 
   // Slider images for NSS activities
@@ -322,7 +331,7 @@ const Landing = () => {
             
             <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 text-center">
               {/* Active Volunteers */}
-              <div className="transform hover:scale-105 md:hover:scale-110 transition-all duration-300 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-lg hover:shadow-xl">
+              <div className="stat-card stat-card-blue">
                 <div className="flex items-center justify-center mb-1 sm:mb-2">
                   <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
@@ -338,7 +347,7 @@ const Landing = () => {
               </div>
 
               {/* Events Conducted */}
-              <div className="transform hover:scale-105 md:hover:scale-110 transition-all duration-300 bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-lg hover:shadow-xl">
+              <div className="stat-card stat-card-green">
                 <div className="flex items-center justify-center mb-1 sm:mb-2">
                   <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-green-600" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
@@ -354,7 +363,7 @@ const Landing = () => {
               </div>
 
               {/* Institutions */}
-              <div className="transform hover:scale-105 md:hover:scale-110 transition-all duration-300 bg-gradient-to-br from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-lg hover:shadow-xl">
+              <div className="stat-card stat-card-orange">
                 <div className="flex items-center justify-center mb-1 sm:mb-2">
                   <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
@@ -370,7 +379,7 @@ const Landing = () => {
               </div>
 
               {/* Hours of Service */}
-              <div className="transform hover:scale-105 md:hover:scale-110 transition-all duration-300 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-lg hover:shadow-xl">
+              <div className="stat-card stat-card-purple">
                 <div className="flex items-center justify-center mb-1 sm:mb-2">
                   <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
