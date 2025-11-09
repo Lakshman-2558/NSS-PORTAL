@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 import { DocumentArrowDownIcon, PlusIcon } from '@heroicons/react/24/outline';
 import ContributionForm from '../../components/Student/ContributionForm';
+import anime from 'animejs/lib/anime.es.js';
 
 const StudentProfile = () => {
   const [profile, setProfile] = useState(null);
@@ -16,6 +17,29 @@ const StudentProfile = () => {
   useEffect(() => {
     fetchProfile();
   }, []);
+
+  // Animate profile sections when loaded
+  useEffect(() => {
+    if (!loading && profile) {
+      anime({
+        targets: '.profile-section',
+        translateX: [-60, 0],
+        opacity: [0, 1],
+        delay: anime.stagger(150),
+        duration: 700,
+        easing: 'easeOutCubic'
+      });
+
+      anime({
+        targets: '.contribution-item',
+        scale: [0.8, 1],
+        opacity: [0, 1],
+        delay: anime.stagger(80, {start: 400}),
+        duration: 500,
+        easing: 'easeOutQuad'
+      });
+    }
+  }, [loading, profile]);
 
   const fetchProfile = async () => {
     try {

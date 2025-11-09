@@ -4,11 +4,27 @@ import api from '../../utils/api';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 import { CalendarIcon, MapPinIcon, UserGroupIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
+import anime from 'animejs/lib/anime.es.js';
 
 const StudentEvents = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
+
+  // Animate events when they load
+  useEffect(() => {
+    if (!loading && events.length > 0) {
+      anime({
+        targets: '.event-card',
+        scale: [0.9, 1],
+        opacity: [0, 1],
+        translateY: [40, 0],
+        delay: anime.stagger(100),
+        duration: 600,
+        easing: 'easeOutCubic'
+      });
+    }
+  }, [loading, events]);
 
   useEffect(() => {
     fetchEvents();
@@ -67,7 +83,7 @@ const StudentEvents = () => {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {events.map((event) => (
-          <div key={event._id} className="bg-white shadow rounded-lg overflow-hidden">
+          <div key={event._id} className="event-card bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:-translate-y-2 hover:scale-105" style={{opacity: 0}}>
             <div className="p-6">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-lg font-semibold text-gray-900">{event.title}</h3>
