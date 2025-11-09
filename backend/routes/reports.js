@@ -451,7 +451,7 @@ router.post('/student/submit', [auth, authorize('student'), upload.array('files'
 
         const result = await cloudinary.uploader.upload(dataURI, {
           folder: `nss-reports/${eventId}`,
-          resource_type: 'auto',
+          resource_type: 'raw',
           public_id: `${Date.now()}-${safeName}`
         });
 
@@ -803,7 +803,7 @@ router.post('/admin/consolidated-pdf', [auth, authorize('admin', 'faculty')], as
       const uploadResult = await cloudinary.uploader.upload(dataUri, {
         folder: `nss-reports/consolidated/${academicYear}`,
         public_id: `${normalizedType.toLowerCase()}-${Date.now()}`,
-        resource_type: 'auto'
+        resource_type: 'raw'
       });
       if (uploadResult?.secure_url) {
         res.setHeader('X-Cloudinary-URL', uploadResult.secure_url);
