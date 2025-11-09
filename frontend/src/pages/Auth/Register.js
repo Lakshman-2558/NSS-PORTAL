@@ -35,12 +35,14 @@ const Register = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-green-600/20 via-blue-600/20 to-orange-500/20"></div>
       
       <div className="max-w-md w-full space-y-8 bg-white/95 backdrop-blur-lg p-10 rounded-2xl shadow-2xl border-2 border-green-100 animate-fadeIn relative z-10">
-        {/* Logo/Icon */}
+        {/* Logo */}
         <div className="flex justify-center">
-          <div className="w-20 h-20 bg-gradient-to-br from-green-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
-            <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 2.18l8 3.6v8.55c0 4.44-3.07 8.61-7 9.67-3.93-1.06-7-5.23-7-9.67V7.78l6-2.7v13.92h2V4.18z"/>
-            </svg>
+          <div className="w-24 h-24 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+            <img 
+              src="/logo-ueac.png" 
+              alt="NSS Logo" 
+              className="w-full h-full object-contain"
+            />
           </div>
         </div>
         
