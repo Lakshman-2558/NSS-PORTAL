@@ -7,10 +7,17 @@ import {
 } from '@heroicons/react/24/outline';
 import ImageSlider from '../components/ImageSlider';
 import ThemeToggle from '../components/ThemeToggle';
+import { useFadeIn, useSlideInBottom, useStaggerFadeIn, useScrollReveal } from '../hooks/useAnimations';
 import api from '../utils/api';
 
 const Landing = () => {
   const navigate = useNavigate();
+  
+  // Animation refs
+  const heroRef = useFadeIn(200);
+  const statsRef = useStaggerFadeIn(150);
+  const featuresRef = useScrollReveal();
+  const ctaRef = useSlideInBottom(300);
   
   // Counter animation state
   const [counters, setCounters] = useState({
@@ -181,7 +188,7 @@ const Landing = () => {
       {/* Main Content */}
       <main className="w-full px-4 sm:px-6 lg:container lg:mx-auto py-8 sm:py-12">
         {/* Hero Section */}
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mb-16">
+        <div ref={heroRef} className="flex flex-col lg:flex-row items-center justify-between gap-12 mb-16">
           {/* Left Content */}
           <div className="flex-1 space-y-6">
             <div className="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold">
@@ -201,7 +208,7 @@ const Landing = () => {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 pt-4">
               <button
                 onClick={() => navigate('/register')}
                 className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center gap-2 w-full sm:w-auto"
@@ -306,16 +313,16 @@ const Landing = () => {
         </div>
 
         {/* Statistics Section - Dynamic Animated */}
-        <div className="mt-8 sm:mt-12 lg:mt-16 bg-white rounded-2xl p-4 sm:p-6 lg:p-12 shadow-2xl relative overflow-hidden border-2 border-blue-100">
+        <div ref={featuresRef} className="mt-8 sm:mt-12 lg:mt-16 bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 lg:p-12 shadow-2xl relative overflow-hidden border-2 border-blue-100 dark:border-blue-900">
           {/* Animated background effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-orange-50 to-blue-50 opacity-50"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-orange-50 to-blue-50 dark:from-blue-900/20 dark:via-purple-900/20 dark:to-orange-900/20 opacity-50"></div>
           
           <div className="relative z-10">
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-4 sm:mb-6 lg:mb-8 animate-fade-in bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
               Our Impact in Numbers
             </h2>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 text-center">
+            <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 text-center">
               {/* Active Volunteers */}
               <div className="transform hover:scale-105 md:hover:scale-110 transition-all duration-300 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-lg hover:shadow-xl">
                 <div className="flex items-center justify-center mb-1 sm:mb-2">
