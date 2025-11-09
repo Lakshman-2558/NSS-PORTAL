@@ -4,8 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import responsive utilities */
 @import './styles/responsive.css';
+
+/* Smooth scrolling for the entire website */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced smooth scrolling with custom easing */
+* {
+  scroll-behavior: smooth;
+}
 
 @layer base {
   * {
