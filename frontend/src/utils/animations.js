@@ -312,7 +312,7 @@ export const ripple = (x, y, container) => {
   });
 };
 
-export default {
+const animationFunctions = {
   fadeIn,
   fadeInLeft,
   fadeInRight,
@@ -339,3 +339,5 @@ export default {
   elasticBounce,
   ripple
 };
+
+export default animationFunctions;

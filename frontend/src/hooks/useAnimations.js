@@ -85,6 +85,7 @@ export const useScrollReveal = () => {
   const ref = useRef(null);
 
   useEffect(() => {
+    const element = ref.current; // Copy ref to variable for cleanup
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -97,13 +98,13 @@ export const useScrollReveal = () => {
       { threshold: 0.1 }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    if (element) {
+      observer.observe(element);
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (element) {
+        observer.unobserve(element);
       }
     };
   }, []);
@@ -137,7 +138,7 @@ export const useCounterAnimation = (start, end, duration = 2000) => {
   return ref;
 };
 
-export default {
+const animationHooks = {
   useFadeIn,
   useFadeInLeft,
   useFadeInRight,
@@ -148,3 +149,5 @@ export default {
   usePageTransition,
   useCounterAnimation
 };
+
+export default animationHooks;
