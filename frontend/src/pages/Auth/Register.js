@@ -34,7 +34,7 @@ const Register = () => {
       {/* Animated overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-600/20 via-blue-600/20 to-orange-500/20"></div>
       
-      <div className="max-w-md w-full space-y-4 sm:space-y-6 bg-white/30 backdrop-blur-xl p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl border border-white/50 animate-fadeIn relative z-10">
+      <div className="max-w-md w-full space-y-4 sm:space-y-6 bg-white/30 dark:bg-gray-800/30 backdrop-blur-xl p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl border border-white/50 dark:border-gray-600/50 animate-fadeIn relative z-10 transition-colors duration-300">
         {/* Logo */}
         <div className="flex justify-center">
           <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
@@ -50,10 +50,10 @@ const Register = () => {
           <h2 className="mt-3 sm:mt-4 text-center text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
             Create your account
           </h2>
-          <p className="mt-2 sm:mt-3 text-center text-sm sm:text-base text-gray-700 font-medium">
+          <p className="mt-2 sm:mt-3 text-center text-sm sm:text-base text-gray-700 dark:text-gray-200 font-medium">
             Join the NSS Community
           </p>
-          <p className="mt-1.5 sm:mt-2 text-center text-xs sm:text-sm text-gray-600">
+          <p className="mt-1.5 sm:mt-2 text-center text-xs sm:text-sm text-gray-600 dark:text-gray-300">
             Already have an account?{' '}
             <Link to="/login" className="font-semibold text-green-600 hover:text-blue-600 underline-offset-4 hover:underline transition-all duration-300">
               Sign in here
@@ -63,7 +63,7 @@ const Register = () => {
         <form className="mt-4 sm:mt-6 space-y-4 sm:space-y-5" onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-3 sm:space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
                 Full Name
               </label>
               <input
@@ -76,7 +76,7 @@ const Register = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
                 Email
               </label>
               <input
@@ -89,7 +89,7 @@ const Register = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
                 Password
               </label>
               <input
@@ -102,7 +102,7 @@ const Register = () => {
             </div>
 
             <div>
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="role" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
                 Role
               </label>
               <select

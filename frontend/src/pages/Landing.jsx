@@ -6,6 +6,7 @@ import {
   ChevronRightIcon
 } from '@heroicons/react/24/outline';
 import ImageSlider from '../components/ImageSlider';
+import ThemeToggle from '../components/ThemeToggle';
 import api from '../utils/api';
 
 const Landing = () => {
@@ -118,9 +119,9 @@ const Landing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden transition-colors duration-300">
       {/* Header Section */}
-      <header className="bg-white shadow-md border-b-4 border-orange-500">
+      <header className="bg-white dark:bg-gray-800 shadow-md border-b-4 border-orange-500 dark:border-orange-600 transition-colors duration-300">
         <div className="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-3 sm:py-4">
           <div className="flex items-center justify-between">
             {/* Left Section - Government Logos */}
@@ -142,10 +143,10 @@ const Landing = () => {
                     </svg>
                   </div>
                 </div>
-                <div className="border-l-2 border-gray-300 pl-3">
-                  <h2 className="text-xs font-semibold text-orange-600">Vignan's University Extension Activites Council</h2>
-                  <p className="text-xs text-gray-700">National Service Scheme</p>
-                  <p className="text-xs text-gray-600">युवा मामलों और खेल मंत्रालय</p>
+                <div className="border-l-2 border-gray-300 dark:border-gray-600 pl-3">
+                  <h2 className="text-xs font-semibold text-orange-600 dark:text-orange-400">Vignan's University Extension Activites Council</h2>
+                  <p className="text-xs text-gray-700 dark:text-gray-300">National Service Scheme</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">युवा मामलों और खेल मंत्रालय</p>
                 </div>
               </div>
             </div>
@@ -166,11 +167,12 @@ const Landing = () => {
                   <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                 </svg>
               </div>
-              <div className="flex items-center space-x-2 text-gray-600">
+              <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-300">
                 <GlobeIcon className="w-5 h-5" />
                 <SearchIcon className="w-5 h-5" />
               </div>
-              <div className="text-sm text-gray-700 font-semibold">हिंदी</div>
+              <div className="text-sm text-gray-700 dark:text-gray-300 font-semibold">हिंदी</div>
+              <ThemeToggle />
             </div>
           </div>
         </div>

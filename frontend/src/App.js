@@ -5,6 +5,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AuthProvider } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
+import { ThemeProvider as CustomThemeProvider } from './context/ThemeContext';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Layout/Navbar';
 import Landing from './pages/Landing';
@@ -146,16 +147,18 @@ function AppContent() {
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AuthProvider>
-        <SocketProvider>
-          <Router>
-            <AppContent />
-          </Router>
-        </SocketProvider>
-      </AuthProvider>
-    </ThemeProvider>
+    <CustomThemeProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <AuthProvider>
+          <SocketProvider>
+            <Router>
+              <AppContent />
+            </Router>
+          </SocketProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </CustomThemeProvider>
   );
 }
 
