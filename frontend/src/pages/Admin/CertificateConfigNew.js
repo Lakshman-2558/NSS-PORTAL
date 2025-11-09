@@ -59,7 +59,7 @@ const CertificateConfigNew = () => {
         
         // Load template image if exists
         if (eventData.certificate.templateUrl) {
-          const imgUrl = `http://localhost:5000${eventData.certificate.templateUrl}`;
+          const imgUrl = `https://nss-portal-backend.onrender.com${eventData.certificate.templateUrl}`;
           setCertificateImage(imgUrl);
         }
       }
