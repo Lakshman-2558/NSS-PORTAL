@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
 const CertificateConfigNew = () => {
@@ -44,10 +44,7 @@ const CertificateConfigNew = () => {
 
   const fetchEvent = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(`/api/events/${eventId}`, {
-        headers: { 'x-auth-token': token }
-      });
+      const response = await api.get(`/events/${eventId}`);
       
       const eventData = response.data;
       setEvent(eventData);
@@ -93,13 +90,7 @@ const CertificateConfigNew = () => {
     formData.append('template', file);
 
     try {
-      const token = localStorage.getItem('token');
-      await axios.post(`/api/certificates/upload-template/${eventId}`, formData, {
-        headers: {
-          'x-auth-token': token,
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      await api.post(`/certificates/upload-template/${eventId}`, formData);
       toast.success('Template uploaded successfully!');
       fetchEvent(); // Refresh event data
     } catch (error) {
@@ -180,16 +171,13 @@ const CertificateConfigNew = () => {
 
   const handleSaveConfiguration = async () => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.put(`/api/certificates/configure/${eventId}`, {
+      await api.put(`/certificates/configure/${eventId}`, {
         fields: {
           name: nameSettings,
           eventName: eventSettings,
           date: dateSettings
         },
         autoSend: true
-      }, {
-        headers: { 'x-auth-token': token }
       });
       toast.success('Configuration saved successfully!');
     } catch (error) {
@@ -200,11 +188,9 @@ const CertificateConfigNew = () => {
 
   const handleTestPreview = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post(`/api/certificates/test-preview/${eventId}`, {
+      const response = await api.post(`/certificates/test-preview/${eventId}`, {
         testName: 'Sample Student Name'
       }, {
-        headers: { 'x-auth-token': token },
         responseType: 'blob'
       });
       
@@ -224,10 +210,7 @@ const CertificateConfigNew = () => {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post(`/api/certificates/generate/${eventId}`, {}, {
-        headers: { 'x-auth-token': token }
-      });
+      const response = await api.post(`/certificates/generate/${eventId}`, {});
       toast.success(`Certificates generated! ${response.data.successCount} sent successfully.`);
     } catch (error) {
       console.error('Generate error:', error);
