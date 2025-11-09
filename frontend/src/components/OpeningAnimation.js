@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as anime from 'animejs';
+import anime from 'animejs/lib/anime.es.js';
 
 const OpeningAnimation = ({ onComplete }) => {
   const containerRef = useRef(null);
