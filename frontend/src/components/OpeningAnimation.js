@@ -7,6 +7,13 @@ const OpeningAnimation = ({ onComplete }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
+    // Play opening sound
+    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
+    audio.volume = 0.3;
+    audio.play().catch(() => {
+      // Autoplay might be blocked, that's okay
+    });
+
     // Timeline for the entire animation sequence
     const timeline = anime.timeline({
       easing: 'easeOutExpo',

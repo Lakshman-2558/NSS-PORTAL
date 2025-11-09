@@ -16,6 +16,29 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Button click animation */
+button, .btn, [role="button"] {
+  transition: all 0.2s ease;
+}
+
+button:active, .btn:active, [role="button"]:active {
+  transform: scale(0.95);
+}
+
+button:hover, .btn:hover, [role="button"]:hover {
+  transform: translateY(-2px);
+}
+
+/* Card hover animation */
+.card, [class*="card"] {
+  transition: all 0.3s ease;
+}
+
+.card:hover, [class*="card"]:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
 @layer base {
   * {
     @apply border-gray-200;

@@ -1,12 +1,37 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useForm } from 'react-hook-form';
+import anime from 'animejs/lib/anime.es.js';
 
 const Register = () => {
   const { register: registerUser } = useAuth();
   const navigate = useNavigate();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const formRef = useRef(null);
+  const logoRef = useRef(null);
+
+  useEffect(() => {
+    // Animate form on mount
+    anime({
+      targets: logoRef.current,
+      scale: [0, 1],
+      rotate: [180, 0],
+      opacity: [0, 1],
+      duration: 800,
+      easing: 'easeOutElastic(1, .8)'
+    });
+
+    anime({
+      targets: formRef.current,
+      translateY: [50, 0],
+      opacity: [0, 1],
+      duration: 600,
+      delay: 200,
+      easing: 'easeOutQuad'
+    });
+  }, []);
+
   const role = watch('role');
 
   const onSubmit = async (data) => {
@@ -34,10 +59,10 @@ const Register = () => {
       {/* Animated overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-600/20 via-blue-600/20 to-orange-500/20"></div>
       
-      <div className="max-w-md w-full space-y-4 sm:space-y-6 bg-white/30 dark:bg-gray-800/30 backdrop-blur-xl p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl border border-white/50 dark:border-gray-600/50 animate-fadeIn relative z-10 transition-colors duration-300">
+      <div ref={formRef} className="max-w-md w-full space-y-4 sm:space-y-6 bg-white/30 dark:bg-gray-800/30 backdrop-blur-xl p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl border border-white/50 dark:border-gray-600/50 relative z-10 transition-colors duration-300" style={{opacity: 0}}>
         {/* Logo */}
         <div className="flex justify-center">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+          <div ref={logoRef} className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center transform hover:scale-110 transition-transform duration-300" style={{opacity: 0}}>
             <img 
               src="/logo-ueac.png" 
               alt="NSS Logo" 
