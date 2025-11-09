@@ -177,7 +177,7 @@ const Landing = () => {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">
+      <main className="w-full px-4 sm:px-6 lg:container lg:mx-auto py-8 sm:py-12">
         {/* Hero Section */}
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mb-16">
           {/* Left Content */}
@@ -186,14 +186,14 @@ const Landing = () => {
               National Service Scheme Portal
             </div>
             
-            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
               Welcome to
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-blue-600">
                 NSS Portal
               </span>
             </h1>
             
-            <p className="text-xl text-gray-600 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
               Join the National Service Scheme and contribute to nation-building through community service. 
               Register now to participate in events, submit reports, and earn certificates.
             </p>
@@ -202,15 +202,15 @@ const Landing = () => {
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <button
                 onClick={() => navigate('/register')}
-                className="group relative px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center gap-2"
+                className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center gap-2 w-full sm:w-auto"
               >
-                Sign Up
-                <ChevronRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <span>Sign Up</span>
+                <ChevronRightIcon className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
               </button>
               
               <button
                 onClick={() => navigate('/login')}
-                className="px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 text-sm sm:text-base font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200 w-full sm:w-auto"
               >
                 Login
               </button>
@@ -231,8 +231,8 @@ const Landing = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Event Management</h3>
-            <p className="text-gray-600">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Event Management</h3>
+            <p className="text-sm sm:text-base text-gray-600">
               Browse and register for NSS events, camps, and community service activities.
             </p>
           </div>
@@ -243,8 +243,8 @@ const Landing = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Report Submission</h3>
-            <p className="text-gray-600">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Report Submission</h3>
+            <p className="text-sm sm:text-base text-gray-600">
               Submit and track your activity reports with AI-powered insights and feedback.
             </p>
           </div>
@@ -255,8 +255,8 @@ const Landing = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Digital Certificates</h3>
-            <p className="text-gray-600">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Digital Certificates</h3>
+            <p className="text-sm sm:text-base text-gray-600">
               Receive and download verified certificates for your participation and achievements.
             </p>
           </div>
@@ -287,16 +287,16 @@ const Landing = () => {
               </div>
             </div>
             <div className="text-center lg:text-left space-y-3">
-              <h2 className="text-3xl lg:text-4xl font-bold text-red-600">
+              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-red-600">
                 UNIVERSITY EXTENSION ACTIVITY COUNCIL
               </h2>
-              <p className="text-xl lg:text-2xl text-gray-700 font-semibold">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 font-semibold">
                 విశ్వవిద్యాలయ విస్తరణ కార్యకలాపాల మండలి
               </p>
-              <p className="text-lg text-gray-600 font-medium">
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 font-medium">
                 विश्वविद्यालय विस्तार गतिविधि परिषद
               </p>
-              <p className="text-gray-500 mt-4 max-w-2xl">
+              <p className="text-sm sm:text-base text-gray-500 mt-4 max-w-2xl">
                 Coordinating and promoting extension activities across universities to foster community engagement and social responsibility.
               </p>
             </div>
@@ -309,11 +309,11 @@ const Landing = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-orange-50 to-blue-50 opacity-50"></div>
           
           <div className="relative z-10">
-            <h2 className="text-3xl lg:text-4xl font-bold text-center mb-8 animate-fade-in bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-6 sm:mb-8 animate-fade-in bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
               Our Impact in Numbers
             </h2>
             
-            <div className="grid md:grid-cols-4 gap-8 text-center">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 text-center">
               {/* Active Volunteers */}
               <div className="transform hover:scale-110 transition-all duration-300 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-xl p-6 shadow-lg hover:shadow-xl">
                 <div className="flex items-center justify-center mb-2">
@@ -321,10 +321,10 @@ const Landing = () => {
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                   </svg>
                 </div>
-                <div className="text-4xl lg:text-5xl font-bold mb-2 text-blue-600">
+                <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-blue-600">
                   {counters.volunteers.toLocaleString()}+
                 </div>
-                <div className="text-blue-700 text-sm lg:text-base font-medium">Active Volunteers</div>
+                <div className="text-blue-700 text-xs sm:text-sm lg:text-base font-medium">Active Volunteers</div>
                 <div className="mt-2 h-1 bg-blue-200 rounded-full overflow-hidden">
                   <div className="h-full bg-blue-600 rounded-full animate-progress" style={{width: '100%'}}></div>
                 </div>
@@ -337,10 +337,10 @@ const Landing = () => {
                     <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
                   </svg>
                 </div>
-                <div className="text-4xl lg:text-5xl font-bold mb-2 text-green-600">
+                <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-green-600">
                   {counters.events.toLocaleString()}+
                 </div>
-                <div className="text-green-700 text-sm lg:text-base font-medium">Events Conducted</div>
+                <div className="text-green-700 text-xs sm:text-sm lg:text-base font-medium">Events Conducted</div>
                 <div className="mt-2 h-1 bg-green-200 rounded-full overflow-hidden">
                   <div className="h-full bg-green-600 rounded-full animate-progress" style={{width: '100%'}}></div>
                 </div>
@@ -353,10 +353,10 @@ const Landing = () => {
                     <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
                   </svg>
                 </div>
-                <div className="text-4xl lg:text-5xl font-bold mb-2 text-orange-600">
+                <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-orange-600">
                   {counters.institutions.toLocaleString()}+
                 </div>
-                <div className="text-orange-700 text-sm lg:text-base font-medium">Institutions</div>
+                <div className="text-orange-700 text-xs sm:text-sm lg:text-base font-medium">Institutions</div>
                 <div className="mt-2 h-1 bg-orange-200 rounded-full overflow-hidden">
                   <div className="h-full bg-orange-600 rounded-full animate-progress" style={{width: '100%'}}></div>
                 </div>
@@ -369,10 +369,10 @@ const Landing = () => {
                     <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
                   </svg>
                 </div>
-                <div className="text-4xl lg:text-5xl font-bold mb-2 text-purple-600">
+                <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-purple-600">
                   {counters.hours.toLocaleString()}+
                 </div>
-                <div className="text-purple-700 text-sm lg:text-base font-medium">Hours of Service</div>
+                <div className="text-purple-700 text-xs sm:text-sm lg:text-base font-medium">Hours of Service</div>
                 <div className="mt-2 h-1 bg-purple-200 rounded-full overflow-hidden">
                   <div className="h-full bg-purple-600 rounded-full animate-progress" style={{width: '100%'}}></div>
                 </div>
