@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   MagnifyingGlassIcon as SearchIcon,
@@ -99,8 +99,8 @@ const Landing = () => {
     };
   }, [stats]);
 
-  // Slider images for NSS activities
-  const sliderImages = [
+  // Memoized slider images to prevent unnecessary re-renders
+  const sliderImages = useMemo(() => [
     {
       url: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800',
       alt: 'NSS Volunteers helping community',
@@ -131,7 +131,11 @@ const Landing = () => {
       caption: 'Cultural Activities',
       description: 'Celebrating diversity through cultural programs'
     }
-  ];
+  ], []);
+
+  // Memoized navigation handlers
+  const handleRegister = useCallback(() => navigate('/register'), [navigate]);
+  const handleLogin = useCallback(() => navigate('/login'), [navigate]);
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-orange-50 overflow-x-hidden overflow-y-auto">
@@ -217,7 +221,7 @@ const Landing = () => {
             {/* CTA Buttons */}
             <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 pt-4">
               <button
-                onClick={() => navigate('/register')}
+                onClick={handleRegister}
                 className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center gap-2 w-full sm:w-auto"
               >
                 <span>Sign Up</span>
@@ -225,7 +229,7 @@ const Landing = () => {
               </button>
               
               <button
-                onClick={() => navigate('/login')}
+                onClick={handleLogin}
                 className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 text-sm sm:text-base font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200 w-full sm:w-auto"
               >
                 Login
