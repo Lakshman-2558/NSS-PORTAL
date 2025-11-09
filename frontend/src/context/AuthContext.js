@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api'; // Import configured axios instance
 import toast from 'react-hot-toast';
 
 const AuthContext = createContext();
@@ -17,38 +17,35 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem('token'));
 
-  // Set axios default header
   useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common['x-auth-token'] = token;
-    } else {
-      delete axios.defaults.headers.common['x-auth-token'];
-    }
-  }, [token]);
+    // Check if token exists and initialize
+    const initializeAuth = async () => {
+      const storedToken = localStorage.getItem('token');
+      if (storedToken) {
+        setToken(storedToken);
+        await fetchUser();
+      } else {
+        setLoading(false);
+      }
+    };
 
-  useEffect(() => {
-    if (token) {
-      fetchUser();
-    } else {
-      // No token means no valid session - clear everything
-      setUser(null);
-      localStorage.removeItem('user');
-      setLoading(false);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+    initializeAuth();
+  }, []);
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get('/api/auth/me');
+      console.log('🔄 Fetching user data...');
+      const response = await api.get('/auth/me');
       const userData = response.data;
       setUser(userData);
-      // Also update localStorage
       localStorage.setItem('user', JSON.stringify(userData));
       console.log('✅ User fetched:', userData.name, 'Role:', userData.role);
     } catch (error) {
-      console.error('Fetch user error:', error);
-      logout();
+      console.error('❌ Fetch user error:', error);
+      // Only logout if it's an authentication error
+      if (error.response?.status === 401) {
+        logout();
+      }
     } finally {
       setLoading(false);
     }
@@ -56,19 +53,22 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('/api/auth/login', { email, password });
+      console.log('🔄 Attempting login...');
+      const response = await api.post('/auth/login', { email, password });
       const { token: newToken, user: userData } = response.data;
       
+      // Store token and user data
       localStorage.setItem('token', newToken);
       localStorage.setItem('user', JSON.stringify(userData));
       setToken(newToken);
       setUser(userData);
-      axios.defaults.headers.common['x-auth-token'] = newToken;
       
+      console.log('✅ Login successful:', userData.name);
       toast.success('Login successful!');
-      return { success: true };
+      return { success: true, user: userData };
     } catch (error) {
-      const message = error.response?.data?.message || 'Login failed';
+      console.error('❌ Login error:', error);
+      const message = error.response?.data?.message || 'Login failed. Please try again.';
       toast.error(message);
       return { success: false, error: message };
     }
@@ -76,42 +76,52 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post('/api/auth/register', userData);
+      console.log('🔄 Attempting registration...');
+      const response = await api.post('/auth/register', userData);
       const { token: newToken, user: userDataResponse } = response.data;
       
       localStorage.setItem('token', newToken);
       localStorage.setItem('user', JSON.stringify(userDataResponse));
       setToken(newToken);
       setUser(userDataResponse);
-      axios.defaults.headers.common['x-auth-token'] = newToken;
       
+      console.log('✅ Registration successful:', userDataResponse.name);
       toast.success('Registration successful!');
-      return { success: true };
+      return { success: true, user: userDataResponse };
     } catch (error) {
-      const message = error.response?.data?.message || 'Registration failed';
+      console.error('❌ Registration error:', error);
+      const message = error.response?.data?.message || 'Registration failed. Please try again.';
       toast.error(message);
       return { success: false, error: message };
     }
   };
 
   const logout = () => {
+    console.log('🔄 Logging out...');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setToken(null);
     setUser(null);
-    delete axios.defaults.headers.common['x-auth-token'];
     toast.success('Logged out successfully');
+    window.location.href = '/login';
+  };
+
+  const updateUser = (updatedUserData) => {
+    setUser(updatedUserData);
+    localStorage.setItem('user', JSON.stringify(updatedUserData));
   };
 
   const value = {
     user,
     loading,
+    token,
     login,
     register,
     logout,
-    isAuthenticated: !!user
+    updateUser,
+    isAuthenticated: !!user && !!token,
+    refetchUser: fetchUser
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
-
