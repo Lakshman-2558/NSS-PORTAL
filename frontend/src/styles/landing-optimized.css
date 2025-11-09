@@ -330,6 +330,38 @@ img[loading="lazy"].loaded {
   }
 }
 
+/* Desktop optimizations - Reduce heavy animations */
+@media (min-width: 769px) {
+  /* Disable transform animations on desktop for better performance */
+  .feature-card:hover {
+    transform: none;
+  }
+  
+  .stat-card:hover {
+    transform: none;
+  }
+  
+  .cta-button:hover {
+    transform: none;
+  }
+  
+  /* Reduce transition durations */
+  .feature-card,
+  .stat-card,
+  .cta-button {
+    transition: opacity 0.2s ease;
+  }
+  
+  /* Disable will-change on desktop to reduce GPU usage */
+  .landing-container,
+  .landing-header,
+  .feature-card,
+  .stat-card,
+  .cta-button {
+    will-change: auto;
+  }
+}
+
 /* Mobile optimizations */
 @media (max-width: 768px) {
   .feature-card:hover {

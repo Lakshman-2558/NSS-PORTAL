@@ -6,18 +6,17 @@ import {
   ChevronRightIcon
 } from '@heroicons/react/24/outline';
 import ImageSlider from '../components/ImageSlider';
-import { useFadeIn, useSlideInBottom, useStaggerFadeIn, useScrollReveal } from '../hooks/useAnimations';
 import api from '../utils/api';
 import '../styles/landing-optimized.css';
 
 const Landing = () => {
   const navigate = useNavigate();
   
-  // Animation refs
-  const heroRef = useFadeIn(200);
-  const statsRef = useStaggerFadeIn(150);
-  const featuresRef = useScrollReveal();
-  const ctaRef = useSlideInBottom(300);
+  // Animation refs - Disabled for desktop to improve performance
+  const heroRef = null; // useFadeIn(200);
+  const statsRef = null; // useStaggerFadeIn(150);
+  const featuresRef = null; // useScrollReveal();
+  const ctaRef = null; // useSlideInBottom(300);
   
   // Counter animation state
   const [counters, setCounters] = useState({
@@ -222,7 +221,7 @@ const Landing = () => {
             <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 pt-4">
               <button
                 onClick={handleRegister}
-                className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center gap-2 w-full sm:w-auto"
+                className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:opacity-90 transition-opacity duration-200 flex items-center justify-center gap-2 w-full sm:w-auto"
               >
                 <span>Sign Up</span>
                 <ChevronRightIcon className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
@@ -230,7 +229,7 @@ const Landing = () => {
               
               <button
                 onClick={handleLogin}
-                className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 text-sm sm:text-base font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200 w-full sm:w-auto"
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 text-sm sm:text-base font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 shadow-md transition-colors duration-200 w-full sm:w-auto"
               >
                 Login
               </button>
@@ -245,7 +244,7 @@ const Landing = () => {
 
         {/* Features Section */}
         <div className="grid md:grid-cols-3 gap-8 mt-16">
-          <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow border-t-4 border-blue-500">
+          <div className="bg-white rounded-xl p-6 shadow-lg border-t-4 border-blue-500">
             <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
               <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -257,7 +256,7 @@ const Landing = () => {
             </p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow border-t-4 border-orange-500">
+          <div className="bg-white rounded-xl p-6 shadow-lg border-t-4 border-orange-500">
             <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
               <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -269,7 +268,7 @@ const Landing = () => {
             </p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow border-t-4 border-green-500">
+          <div className="bg-white rounded-xl p-6 shadow-lg border-t-4 border-green-500">
             <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
               <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
@@ -287,7 +286,7 @@ const Landing = () => {
           <div className="flex flex-col lg:flex-row items-center justify-center gap-6">
             <div className="flex-shrink-0">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-orange-400 rounded-2xl blur-xl opacity-20 animate-pulse"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-orange-400 rounded-2xl blur-xl opacity-20"></div>
                 <div className="relative bg-gradient-to-br from-blue-50 to-orange-50 rounded-2xl p-8 border-4 border-blue-600 shadow-2xl w-56 h-56 flex items-center justify-center">
                   <img 
                     src="/logo-ueac.png" 
