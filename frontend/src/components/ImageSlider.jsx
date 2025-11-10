@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
-const ImageSlider = ({ images, autoPlayInterval = 3000 }) => {
+const ImageSlider = ({ images, autoPlayInterval = 4000 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoPlay, setIsAutoPlay] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
+  // Detect mobile device
   useEffect(() => {
-    if (!isAutoPlay) return;
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Auto-play only on mobile
+  useEffect(() => {
+    if (!isMobile) return;
 
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => 
@@ -15,24 +27,21 @@ const ImageSlider = ({ images, autoPlayInterval = 3000 }) => {
     }, autoPlayInterval);
 
     return () => clearInterval(interval);
-  }, [currentIndex, images.length, autoPlayInterval, isAutoPlay]);
+  }, [isMobile, currentIndex, images.length, autoPlayInterval]);
 
   const goToPrevious = () => {
-    setIsAutoPlay(false);
     setCurrentIndex((prevIndex) => 
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
   };
 
   const goToNext = () => {
-    setIsAutoPlay(false);
     setCurrentIndex((prevIndex) => 
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
   };
 
   const goToSlide = (index) => {
-    setIsAutoPlay(false);
     setCurrentIndex(index);
   };
 
@@ -42,7 +51,7 @@ const ImageSlider = ({ images, autoPlayInterval = 3000 }) => {
       <div className="relative h-[400px] lg:h-[500px] overflow-hidden rounded-2xl shadow-2xl">
         {/* Images */}
         <div 
-          className="flex transition-transform duration-500 ease-out h-full"
+          className={`flex h-full transition-transform ease-out ${isMobile ? 'duration-700' : 'duration-500'}`}
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {images.map((image, index) => (
@@ -74,14 +83,14 @@ const ImageSlider = ({ images, autoPlayInterval = 3000 }) => {
         {/* Navigation Arrows */}
         <button
           onClick={goToPrevious}
-          className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
           aria-label="Previous slide"
         >
           <ChevronLeftIcon className="w-6 h-6" />
         </button>
         <button
           onClick={goToNext}
-          className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
           aria-label="Next slide"
         >
           <ChevronRightIcon className="w-6 h-6" />
@@ -93,7 +102,7 @@ const ImageSlider = ({ images, autoPlayInterval = 3000 }) => {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`transition-all duration-300 rounded-full ${
+              className={`rounded-full transition-all duration-300 ${
                 index === currentIndex
                   ? 'bg-white w-8 h-2'
                   : 'bg-white/50 w-2 h-2 hover:bg-white/75'
@@ -104,13 +113,6 @@ const ImageSlider = ({ images, autoPlayInterval = 3000 }) => {
         </div>
       </div>
 
-      {/* Auto-play control */}
-      <button
-        onClick={() => setIsAutoPlay(!isAutoPlay)}
-        className="absolute top-4 right-4 bg-white/80 hover:bg-white text-gray-800 px-3 py-1 rounded-full text-sm font-medium shadow-lg"
-      >
-        {isAutoPlay ? 'Pause' : 'Play'}
-      </button>
     </div>
   );
 };

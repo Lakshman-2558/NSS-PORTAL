@@ -1,67 +1,32 @@
 /* ========================================
-   OPTIMIZED LANDING PAGE CSS
-   GPU-Accelerated for 60 FPS Performance
+   LANDING PAGE CSS - SMOOTH ANIMATIONS
    ======================================== */
 
-/* GPU Acceleration - Force hardware acceleration */
-.gpu-accelerated,
-.landing-container,
-.landing-header,
-.feature-card,
-.stat-card,
-.cta-button {
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
-/* BEFORE: background-attachment: fixed (MAJOR LAG)
-   AFTER: Static gradient with pseudo-element */
+/* Container */
 .landing-container {
   min-height: 100vh;
   width: 100%;
-  position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.landing-container::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   background: linear-gradient(135deg, #eff6ff 0%, #ffffff 50%, #fff7ed 100%);
-  z-index: -1;
-  will-change: transform;
-  transform: translateZ(-1px) scale(1.1);
 }
 
-
-/* Header - Optimized with GPU acceleration */
+/* Header */
 .landing-header {
   background-color: white;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   border-bottom: 4px solid #f97316;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: sticky;
   top: 0;
   z-index: 50;
 }
 
-
-/* BEFORE: box-shadow transitions (MODERATE LAG)
-   AFTER: Use transform and opacity only */
+/* Feature Cards */
 .feature-card {
   background: white;
   border-radius: 1rem;
   padding: 1.5rem;
   border-top: 4px solid;
   position: relative;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .feature-card::after {
@@ -77,7 +42,7 @@
 }
 
 .feature-card:hover {
-  transform: translateY(-8px) translateZ(0);
+  transform: translateY(-8px);
 }
 
 .feature-card:hover::after {
@@ -88,7 +53,7 @@
 .feature-card-orange { border-top-color: #f97316; }
 .feature-card-green { border-top-color: #10b981; }
 
-/* Feature Icons - GPU Optimized */
+/* Feature Icons */
 .feature-icon {
   width: 3rem;
   height: 3rem;
@@ -97,7 +62,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.3s ease;
 }
 
 .feature-icon-blue { background-color: #dbeafe; }
@@ -105,10 +70,10 @@
 .feature-icon-green { background-color: #d1fae5; }
 
 .feature-card:hover .feature-icon {
-  transform: scale(1.1) rotate(5deg) translateZ(0);
+  transform: scale(1.1) rotate(5deg);
 }
 
-/* CTA Buttons - Optimized */
+/* CTA Buttons */
 .cta-button {
   display: inline-flex;
   align-items: center;
@@ -117,11 +82,10 @@
   padding: 0.75rem 2rem;
   font-weight: 600;
   border-radius: 0.5rem;
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.2s ease;
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .cta-button::before {
@@ -138,11 +102,11 @@
 }
 
 .cta-button:hover {
-  transform: translateY(-2px) translateZ(0);
+  transform: translateY(-2px);
 }
 
 .cta-button:active {
-  transform: translateY(0) scale(0.98) translateZ(0);
+  transform: translateY(0) scale(0.98);
 }
 
 .cta-primary {
@@ -158,7 +122,7 @@
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
-/* Statistics Section - GPU Optimized */
+/* Statistics Section */
 .stats-section {
   margin-top: 4rem;
   background-color: white;
@@ -177,12 +141,12 @@
   z-index: 0;
 }
 
-/* Stat Cards - Optimized with transform only */
+/* Stat Cards */
 .stat-card {
   padding: 0.75rem 1rem;
   border-radius: 0.75rem;
   position: relative;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.3s ease;
 }
 
 @media (min-width: 640px) {
@@ -212,7 +176,7 @@
 }
 
 .stat-card:hover {
-  transform: scale(1.05) translateZ(0);
+  transform: scale(1.05);
 }
 
 .stat-card:hover::after {
@@ -235,7 +199,7 @@
   background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
 }
 
-/* Progress Bars - GPU Optimized */
+/* Progress Bars */
 .stat-progress {
   margin-top: 0.5rem;
   height: 0.25rem;
@@ -248,16 +212,19 @@
   height: 100%;
   border-radius: 9999px;
   animation: progressAnimation 2s ease-out forwards;
-  transform: translateZ(0);
 }
 
 @keyframes progressAnimation {
   from {
-    transform: translateX(-100%) translateZ(0);
+    transform: translateX(-100%);
   }
   to {
-    transform: translateX(0) translateZ(0);
+    transform: translateX(0);
   }
+}
+
+.animate-progress {
+  animation: progressAnimation 2s ease-out forwards;
 }
 
 .stat-progress-blue { background-color: #2563eb; }
@@ -265,116 +232,20 @@
 .stat-progress-orange { background-color: #ea580c; }
 .stat-progress-purple { background-color: #7c3aed; }
 
-/* Smooth Scrolling - Optimized for 60 FPS */
+/* Scrolling */
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: 80px;
-  /* Optimize scrolling performance */
-  -webkit-overflow-scrolling: touch;
-  overflow-y: scroll;
 }
 
 body {
-  /* Prevent layout shifts during scroll */
   overflow-x: hidden;
-  overflow-y: auto;
 }
 
-/* Remove scroll-behavior from all elements to prevent conflicts */
-* {
-  scroll-behavior: auto;
-}
-
-/* Optimize all animated elements for GPU */
-.landing-container,
-.landing-header,
-.feature-card,
-.stat-card,
-.cta-button,
-[class*="animate"] {
-  /* Force GPU acceleration */
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  /* Optimize rendering */
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-perspective: 1000;
-  perspective: 1000;
-}
-
-/* Optimize images for performance */
+/* Images */
 img {
   content-visibility: auto;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
-}
-
-/* Lazy loading optimization */
-img[loading="lazy"] {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-img[loading="lazy"].loaded {
-  opacity: 1;
-}
-
-/* Reduce motion for accessibility */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Desktop optimizations - Reduce heavy animations */
-@media (min-width: 769px) {
-  /* Disable transform animations on desktop for better performance */
-  .feature-card:hover {
-    transform: none;
-  }
-  
-  .stat-card:hover {
-    transform: none;
-  }
-  
-  .cta-button:hover {
-    transform: none;
-  }
-  
-  /* Reduce transition durations */
-  .feature-card,
-  .stat-card,
-  .cta-button {
-    transition: opacity 0.2s ease;
-  }
-  
-  /* Disable will-change on desktop to reduce GPU usage */
-  .landing-container,
-  .landing-header,
-  .feature-card,
-  .stat-card,
-  .cta-button {
-    will-change: auto;
-  }
-}
-
-/* Mobile optimizations */
-@media (max-width: 768px) {
-  .feature-card:hover {
-    transform: translateY(-4px) translateZ(0);
-  }
-  
-  .stat-card:hover {
-    transform: scale(1.02) translateZ(0);
-  }
-  
-  .cta-button:hover {
-    transform: translateY(-1px) translateZ(0);
-  }
 }
 
 /* Containment for better performance */
@@ -388,4 +259,100 @@ img[loading="lazy"].loaded {
 .feature-card {
   content-visibility: auto;
   contain-intrinsic-size: 0 500px;
+}
+
+/* Mobile-specific enhancements (768px and below) */
+@media (max-width: 768px) {
+  /* Enable smooth scrolling on mobile */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Enhanced animations for mobile */
+  .feature-card {
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.4s ease,
+                opacity 0.6s ease;
+    animation: fadeInUp 0.6s ease-out;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-12px) scale(1.02);
+  }
+  
+  .feature-icon {
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  .feature-card:hover .feature-icon {
+    transform: scale(1.2) rotate(10deg);
+  }
+  
+  .stat-card {
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: fadeInScale 0.8s ease-out;
+  }
+  
+  .stat-card:hover {
+    transform: scale(1.08) rotate(1deg);
+  }
+  
+  .stat-card:nth-child(1) { animation-delay: 0.1s; }
+  .stat-card:nth-child(2) { animation-delay: 0.2s; }
+  .stat-card:nth-child(3) { animation-delay: 0.3s; }
+  .stat-card:nth-child(4) { animation-delay: 0.4s; }
+  
+  .cta-button {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.3s ease;
+  }
+  
+  .cta-button:hover {
+    transform: translateY(-4px) scale(1.05);
+  }
+  
+  .cta-button:active {
+    transform: translateY(0) scale(0.95);
+  }
+  
+  /* Mobile-only animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  /* Animate progress bars with bounce on mobile */
+  .animate-progress {
+    animation: progressAnimationMobile 2.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  
+  @keyframes progressAnimationMobile {
+    0% {
+      transform: translateX(-100%);
+    }
+    70% {
+      transform: translateX(5%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
 }

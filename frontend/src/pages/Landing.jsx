@@ -60,20 +60,20 @@ const Landing = () => {
     fetchStats();
   }, []);
 
-  // Optimized counter animation with requestAnimationFrame
+  // Smooth counter animation
   useEffect(() => {
-    if (stats.volunteers === 0) return;
+    if (stats.volunteers === 0) {
+      setCounters(stats);
+      return;
+    }
 
-    let startTime = null;
     let animationFrame;
     const duration = 2000;
+    const startTime = Date.now();
 
-    const animate = (currentTime) => {
-      if (!startTime) startTime = currentTime;
-      const elapsed = currentTime - startTime;
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-
-      // Easing function for smooth animation
       const easeOutQuad = progress * (2 - progress);
 
       setCounters({
@@ -91,11 +91,7 @@ const Landing = () => {
     };
 
     animationFrame = requestAnimationFrame(animate);
-    return () => {
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-      }
-    };
+    return () => cancelAnimationFrame(animationFrame);
   }, [stats]);
 
   // Memoized slider images to prevent unnecessary re-renders
@@ -137,7 +133,7 @@ const Landing = () => {
   const handleLogin = useCallback(() => navigate('/login'), [navigate]);
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-orange-50 overflow-x-hidden overflow-y-auto">
+    <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-orange-50">
       {/* Header Section */}
       <header className="bg-white shadow-md border-b-4 border-orange-500">
         <div className="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-3 sm:py-4">
@@ -221,15 +217,15 @@ const Landing = () => {
             <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 pt-4">
               <button
                 onClick={handleRegister}
-                className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:opacity-90 transition-opacity duration-200 flex items-center justify-center gap-2 w-full sm:w-auto"
+                className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 w-full sm:w-auto"
               >
                 <span>Sign Up</span>
-                <ChevronRightIcon className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+                <ChevronRightIcon className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
               
               <button
                 onClick={handleLogin}
-                className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 text-sm sm:text-base font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 shadow-md transition-colors duration-200 w-full sm:w-auto"
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 text-sm sm:text-base font-semibold rounded-lg border-2 border-blue-600 shadow-md hover:bg-blue-50 transition-colors duration-200 w-full sm:w-auto"
               >
                 Login
               </button>
@@ -328,7 +324,7 @@ const Landing = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-orange-50 to-blue-50 opacity-50"></div>
           
           <div className="relative z-10">
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-4 sm:mb-6 lg:mb-8 animate-fade-in bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-4 sm:mb-6 lg:mb-8 bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
               Our Impact in Numbers
             </h2>
             

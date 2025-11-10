@@ -1,84 +1,64 @@
-const nodemailer = require('nodemailer');
 const path = require('path');
+const brevo = require('@getbrevo/brevo');
 
 // Ensure .env is loaded (in case this module is loaded before server.js)
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-// Configure email transporter
-let transporter = null;
+// Configure Brevo API client
+let apiInstance = null;
+let isBrevoConfigured = false;
 
-// Initialize transporter if credentials are available
-if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-  console.log('📧 Initializing email transporter...');
+// Initialize Brevo if API key is available
+if (process.env.BREVO_API_KEY) {
+  console.log('📧 Initializing Brevo email service...');
   try {
-    transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-      port: parseInt(process.env.EMAIL_PORT) || 587,
-      secure: false, // true for 465, false for other ports
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      },
-      tls: {
-        rejectUnauthorized: false // For self-signed certificates
-      }
-    });
-
-    // Verify connection configuration
-    transporter.verify((error, success) => {
-      if (error) {
-        console.error('❌ Email transporter verification failed:', error.message);
-        if (error.code === 'EAUTH') {
-          console.error('   Authentication failed. Check EMAIL_USER and EMAIL_PASS');
-        } else if (error.code === 'ECONNECTION') {
-          console.error('   Connection failed. Check EMAIL_HOST and EMAIL_PORT');
-        }
-      } else {
-        console.log('✅ Email transporter is ready to send messages');
-      }
-    });
+    apiInstance = new brevo.TransactionalEmailsApi();
+    
+    // Set API key
+    const apiKey = apiInstance.authentications['apiKey'];
+    apiKey.apiKey = process.env.BREVO_API_KEY;
+    
+    isBrevoConfigured = true;
+    console.log('✅ Brevo email service is ready to send messages');
   } catch (error) {
-    console.error('Failed to initialize email transporter:', error);
+    console.error('❌ Failed to initialize Brevo:', error.message);
   }
 } else {
-  console.log('Email credentials not found. Email notifications will be disabled.');
-  console.log('To enable emails, set EMAIL_USER and EMAIL_PASS in backend/.env file');
+  console.log('⚠️ Brevo API key not found. Email notifications will be disabled.');
+  console.log('To enable emails, set BREVO_API_KEY in backend/.env file');
+  console.log('Get your API key from: https://app.brevo.com/settings/keys/api');
 }
 
-// Send email notification
+// Send email notification using Brevo
 const sendEmail = async (to, subject, text, html) => {
   try {
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      console.log('Email not configured. EMAIL_USER or EMAIL_PASS not set. Skipping email notification.');
-      return { success: false, message: 'Email not configured' };
+    if (!isBrevoConfigured) {
+      console.log('⚠️ Brevo not configured. Skipping email notification.');
+      return { success: false, message: 'Brevo not configured' };
     }
 
-    // Verify transporter is configured
-    if (!transporter) {
-      console.error('Email transporter not initialized');
-      return { success: false, message: 'Email transporter not initialized' };
-    }
+    // Get sender email from environment or use default
+    const senderEmail = process.env.BREVO_SENDER_EMAIL || process.env.EMAIL_USER || 'noreply@nssportal.com';
+    const senderName = process.env.BREVO_SENDER_NAME || 'NSS Portal';
 
-    const mailOptions = {
-      from: `"NSS Portal" <${process.env.EMAIL_USER}>`,
-      to,
-      subject,
-      text,
-      html
-    };
+    // Create SendSmtpEmail object
+    const sendSmtpEmail = new brevo.SendSmtpEmail();
+    sendSmtpEmail.sender = { name: senderName, email: senderEmail };
+    sendSmtpEmail.to = [{ email: to }];
+    sendSmtpEmail.subject = subject;
+    sendSmtpEmail.htmlContent = html;
+    sendSmtpEmail.textContent = text;
 
-    console.log(`Attempting to send email to: ${to}`);
-    const info = await transporter.sendMail(mailOptions);
-    console.log(`Email sent successfully to ${to}:`, info.messageId);
-    return { success: true, messageId: info.messageId };
+    console.log(`📧 Attempting to send email to: ${to}`);
+    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log(`✅ Email sent successfully to ${to}. Message ID: ${data.messageId}`);
+    return { success: true, messageId: data.messageId };
   } catch (error) {
-    console.error(`Email send error for ${to}:`, error.message);
-    if (error.code === 'EAUTH') {
-      console.error('Authentication failed. Check EMAIL_USER and EMAIL_PASS in .env file');
-    } else if (error.code === 'ECONNECTION') {
-      console.error('Connection failed. Check EMAIL_HOST and EMAIL_PORT in .env file');
+    console.error(`❌ Email send error for ${to}:`, error.message);
+    if (error.response) {
+      console.error('   Response:', error.response.text);
     }
-    return { success: false, error: error.message, code: error.code };
+    return { success: false, error: error.message };
   }
 };
 
@@ -195,27 +175,15 @@ const sendNewEventNotification = async (event, students) => {
   console.log(`\n📧 ===== Starting email notification for event: ${event.title} =====`);
   console.log(`📋 Total registered students to notify: ${students.length}`);
   
-  // Check email configuration first
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    console.error('❌ EMAIL_USER or EMAIL_PASS not configured in .env file');
-    console.error('   Email notifications will be skipped. Please configure email in backend/.env');
+  // Check Brevo configuration first
+  if (!isBrevoConfigured) {
+    console.error('❌ Brevo API not configured in .env file');
+    console.error('   Email notifications will be skipped. Please configure BREVO_API_KEY in backend/.env');
     return students.map(s => ({ 
       student: s.email || 'no-email', 
       studentName: s.name,
       success: false, 
-      error: 'Email not configured' 
-    }));
-  }
-
-  // Verify transporter is ready
-  if (!transporter) {
-    console.error('❌ Email transporter not initialized');
-    console.error('   This usually means email credentials are invalid or transporter failed to initialize');
-    return students.map(s => ({ 
-      student: s.email || 'no-email', 
-      studentName: s.name,
-      success: false, 
-      error: 'Email transporter not initialized' 
+      error: 'Brevo not configured' 
     }));
   }
 
@@ -228,9 +196,7 @@ const sendNewEventNotification = async (event, students) => {
     return [];
   }
   
-  console.log('✅ Email configuration verified, starting to send emails...');
-  console.log(`   Using EMAIL_USER: ${process.env.EMAIL_USER}`);
-  console.log(`   Transporter initialized: ${transporter ? 'Yes' : 'No'}`);
+  console.log('✅ Brevo email service verified, starting to send emails...');
 
   const subject = `New NSS Event: ${event.title}`;
   const text = `Dear Student,\n\nA new NSS event "${event.title}" has been created!\n\nEvent Details:\n- Type: ${event.eventType}\n- Location: ${event.location}\n- Start Date: ${new Date(event.startDate).toLocaleDateString()}\n- End Date: ${new Date(event.endDate).toLocaleDateString()}\n- Registration Deadline: ${new Date(event.registrationDeadline).toLocaleDateString()}\n\nLog in to the NSS Portal to register for this event.`;

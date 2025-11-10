@@ -12,8 +12,8 @@ dotenv.config({ path: path.join(__dirname, '.env') });
 console.log('\n🔧 Environment Configuration:');
 console.log(`   MongoDB URI: ${process.env.MONGODB_URI ? '✅ Set' : '❌ Not set'}`);
 console.log(`   JWT Secret: ${process.env.JWT_SECRET ? '✅ Set' : '❌ Not set'}`);
-console.log(`   Email User: ${process.env.EMAIL_USER ? '✅ Set (' + process.env.EMAIL_USER + ')' : '❌ Not set'}`);
-console.log(`   Email Pass: ${process.env.EMAIL_PASS ? '✅ Set' : '❌ Not set'}`);
+console.log(`   Brevo API Key: ${process.env.BREVO_API_KEY ? '✅ Set (***' + process.env.BREVO_API_KEY.slice(-4) + ')' : '⚠️ Not set (emails disabled)'}`);
+console.log(`   Brevo Sender: ${process.env.BREVO_SENDER_EMAIL ? '✅ ' + process.env.BREVO_SENDER_EMAIL : '⚠️ Not set'}`);
 console.log(`   Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:3000'}`);
 console.log('');
 

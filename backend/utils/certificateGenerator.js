@@ -1,19 +1,25 @@
 const { createCanvas, loadImage } = require('canvas');
 const fs = require('fs').promises;
 const path = require('path');
-const nodemailer = require('nodemailer');
+const brevo = require('@getbrevo/brevo');
 const Event = require('../models/Event');
 const Participation = require('../models/Participation');
 const Notification = require('../models/Notification');
 
-// Email transporter configuration
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+// Configure Brevo API client for certificate emails
+let apiInstance = null;
+let isBrevoConfigured = false;
+
+if (process.env.BREVO_API_KEY) {
+  try {
+    apiInstance = new brevo.TransactionalEmailsApi();
+    const apiKey = apiInstance.authentications['apiKey'];
+    apiKey.apiKey = process.env.BREVO_API_KEY;
+    isBrevoConfigured = true;
+  } catch (error) {
+    console.error('❌ Failed to initialize Brevo for certificates:', error.message);
+  }
+}
 
 /**
  * Generate a certificate for a single student
@@ -90,49 +96,62 @@ async function generateCertificate(event, student, templatePath) {
 }
 
 /**
- * Send certificate via email
+ * Send certificate via email using Brevo
  * @param {Object} student - Student object
  * @param {Object} event - Event object
- * @param {Buffer} certificateBuffer - Certificate PDF buffer
+ * @param {Buffer} certificateBuffer - Certificate image buffer
  * @returns {Promise<Object>} - Email send result
  */
 async function sendCertificateEmail(student, event, certificateBuffer) {
   try {
-    const mailOptions = {
-      from: `"NSS Portal" <${process.env.EMAIL_USER}>`,
-      to: student.email,
-      subject: `Certificate for ${event.title}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #2563eb;">Congratulations ${student.name}!</h2>
-          <p>Thank you for your participation in <strong>${event.title}</strong>.</p>
-          <p>Please find your certificate of participation attached to this email.</p>
-          <div style="margin: 20px 0; padding: 15px; background-color: #f3f4f6; border-radius: 8px;">
-            <p style="margin: 5px 0;"><strong>Event:</strong> ${event.title}</p>
-            <p style="margin: 5px 0;"><strong>Date:</strong> ${new Date(event.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-            <p style="margin: 5px 0;"><strong>Location:</strong> ${event.location}</p>
-          </div>
-          <p>Keep up the great work in your NSS activities!</p>
-          <p style="color: #6b7280; font-size: 14px; margin-top: 30px;">
-            Best regards,<br>
-            NSS Team
-          </p>
+    if (!isBrevoConfigured) {
+      console.log('⚠️ Brevo not configured. Skipping certificate email.');
+      return { success: false, message: 'Brevo not configured' };
+    }
+
+    const senderEmail = process.env.BREVO_SENDER_EMAIL || process.env.EMAIL_USER || 'noreply@nssportal.com';
+    const senderName = process.env.BREVO_SENDER_NAME || 'NSS Portal';
+
+    const htmlContent = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #2563eb;">Congratulations ${student.name}!</h2>
+        <p>Thank you for your participation in <strong>${event.title}</strong>.</p>
+        <p>Please find your certificate of participation attached to this email.</p>
+        <div style="margin: 20px 0; padding: 15px; background-color: #f3f4f6; border-radius: 8px;">
+          <p style="margin: 5px 0;"><strong>Event:</strong> ${event.title}</p>
+          <p style="margin: 5px 0;"><strong>Date:</strong> ${new Date(event.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+          <p style="margin: 5px 0;"><strong>Location:</strong> ${event.location}</p>
         </div>
-      `,
-      attachments: [
-        {
-          filename: `Certificate_${student.name.replace(/\s+/g, '_')}_${event.title.replace(/\s+/g, '_')}.png`,
-          content: certificateBuffer,
-          contentType: 'image/png'
-        }
-      ]
-    };
+        <p>Keep up the great work in your NSS activities!</p>
+        <p style="color: #6b7280; font-size: 14px; margin-top: 30px;">
+          Best regards,<br>
+          NSS Team
+        </p>
+      </div>
+    `;
+
+    // Create SendSmtpEmail object with attachment
+    const sendSmtpEmail = new brevo.SendSmtpEmail();
+    sendSmtpEmail.sender = { name: senderName, email: senderEmail };
+    sendSmtpEmail.to = [{ email: student.email, name: student.name }];
+    sendSmtpEmail.subject = `Certificate for ${event.title}`;
+    sendSmtpEmail.htmlContent = htmlContent;
     
-    const info = await transporter.sendMail(mailOptions);
-    console.log(`✅ Certificate sent to ${student.email}`);
-    return { success: true, messageId: info.messageId };
+    // Add certificate as attachment (base64 encoded)
+    sendSmtpEmail.attachment = [{
+      name: `Certificate_${student.name.replace(/\s+/g, '_')}_${event.title.replace(/\s+/g, '_')}.png`,
+      content: certificateBuffer.toString('base64')
+    }];
+
+    console.log(`📧 Sending certificate to ${student.email}...`);
+    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log(`✅ Certificate sent to ${student.email}. Message ID: ${data.messageId}`);
+    return { success: true, messageId: data.messageId };
   } catch (error) {
     console.error(`❌ Failed to send certificate to ${student.email}:`, error.message);
+    if (error.response) {
+      console.error('   Response:', error.response.text);
+    }
     return { success: false, error: error.message };
   }
 }
