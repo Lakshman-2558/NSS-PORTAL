@@ -10,7 +10,10 @@ import {
   ChartBarIcon,
   ArrowRightOnRectangleIcon,
   Bars3Icon,
-  XMarkIcon
+  XMarkIcon,
+  ExclamationTriangleIcon,
+  TrophyIcon,
+  DocumentTextIcon
 } from '@heroicons/react/24/outline';
 
 const Navbar = () => {
@@ -97,20 +100,27 @@ const Navbar = () => {
       return [
         { path: '/admin/dashboard', label: 'Dashboard', icon: HomeIcon },
         { path: '/admin/events', label: 'Events', icon: CalendarIcon },
+        { path: '/admin/problems', label: 'Problems', icon: ExclamationTriangleIcon },
         { path: '/admin/participations', label: 'Participations', icon: UserIcon },
         { path: '/admin/reports', label: 'Reports', icon: ChartBarIcon },
+        { path: '/leaderboard', label: 'Leaderboard', icon: TrophyIcon },
       ];
     } else if (user?.role === 'faculty') {
       return [
         { path: '/faculty/dashboard', label: 'Dashboard', icon: HomeIcon },
         { path: '/admin/events', label: 'Events', icon: CalendarIcon },
+        { path: '/admin/problems', label: 'Problems', icon: ExclamationTriangleIcon },
         { path: '/admin/participations', label: 'Participations', icon: UserIcon },
+        { path: '/leaderboard', label: 'Leaderboard', icon: TrophyIcon },
       ];
     } else {
       return [
         { path: '/student/dashboard', label: 'Dashboard', icon: HomeIcon },
         { path: '/student/events', label: 'Events', icon: CalendarIcon },
+        { path: '/student/report-problem', label: 'Report Problem', icon: ExclamationTriangleIcon },
+        { path: '/student/my-problem-reports', label: 'My Reports', icon: DocumentTextIcon },
         { path: '/student/profile', label: 'Profile', icon: UserIcon },
+        { path: '/leaderboard', label: 'Leaderboard', icon: TrophyIcon },
       ];
     }
   };
@@ -127,20 +137,21 @@ const Navbar = () => {
               </h1>
             </div>
             
-            {/* Desktop Navigation */}
-            <div className="hidden md:ml-6 md:flex md:space-x-2">
+            {/* Desktop Navigation - Scrollable if needed */}
+            <div className="hidden md:ml-6 md:flex md:items-center md:gap-1 overflow-x-auto scrollbar-hide max-w-3xl">
               {getNavLinks().map((link) => {
                 const Icon = link.icon;
                 return (
                   <Link
                     key={link.path}
                     to={link.path}
-                    className="nav-link inline-flex items-center px-4 py-2 mx-1 rounded-xl text-sm font-semibold text-gray-700 hover:text-primary-600 hover:bg-gradient-to-r hover:from-primary-50 hover:to-secondary-50 transition-all duration-300 relative group shadow-sm hover:shadow-md"
+                    className="nav-link inline-flex items-center px-3 py-2 rounded-xl text-xs lg:text-sm font-semibold text-gray-700 hover:text-primary-600 hover:bg-gradient-to-r hover:from-primary-50 hover:to-secondary-50 transition-all duration-300 relative group shadow-sm hover:shadow-md whitespace-nowrap flex-shrink-0"
                     onMouseEnter={handleNavLinkHover}
                     onMouseLeave={handleNavLinkLeave}
                   >
-                    <Icon className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
-                    {link.label}
+                    <Icon className="h-4 w-4 lg:h-5 lg:w-5 mr-1.5 group-hover:scale-110 transition-transform duration-300" />
+                    <span className="hidden lg:inline">{link.label}</span>
+                    <span className="lg:hidden">{link.label.split(' ')[0]}</span>
                     <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full" />
                   </Link>
                 );

@@ -23,13 +23,17 @@ import StudentEvents from './pages/Student/Events';
 import StudentProfile from './pages/Student/Profile';
 import SubmitReport from './pages/Student/SubmitReport';
 import MyReports from './pages/Student/MyReports';
+import ReportProblem from './pages/Student/ReportProblem';
+import MyProblemReports from './pages/Student/MyProblemReports';
+import ProblemDashboard from './pages/Admin/ProblemDashboard';
+import Leaderboard from './pages/Leaderboard';
 import FacultyDashboard from './pages/Faculty/Dashboard';
 import theme from './theme';
 
 function AppContent() {
   const location = useLocation();
-  const publicRoutes = ['/', '/login', '/register'];
-  const isPublicRoute = publicRoutes.includes(location.pathname);
+  const noNavbarRoutes = ['/', '/login', '/register'];
+  const shouldHideNavbar = noNavbarRoutes.includes(location.pathname);
   const [showAnimation, setShowAnimation] = useState(false);
 
   useEffect(() => {
@@ -51,7 +55,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-gradient-mesh">
-      {!isPublicRoute && <Navbar />}
+      {!shouldHideNavbar && <Navbar />}
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
@@ -103,6 +107,14 @@ function AppContent() {
               element={
                 <PrivateRoute roles={['admin', 'faculty']}>
                   <AIReports />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/problems"
+              element={
+                <PrivateRoute roles={['admin', 'faculty']}>
+                  <ProblemDashboard />
                 </PrivateRoute>
               }
             />
@@ -158,6 +170,25 @@ function AppContent() {
                 </PrivateRoute>
               }
             />
+            <Route
+              path="/student/report-problem"
+              element={
+                <PrivateRoute roles={['student']}>
+                  <ReportProblem />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/student/my-problem-reports"
+              element={
+                <PrivateRoute roles={['student']}>
+                  <MyProblemReports />
+                </PrivateRoute>
+              }
+            />
+
+            {/* Public Leaderboard */}
+            <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
       <Toaster position="top-right" />
     </div>

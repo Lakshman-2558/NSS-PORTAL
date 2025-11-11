@@ -84,7 +84,16 @@ const eventSchema = new mongoose.Schema({
       autoSend: true
     })
   },
-  certificatesSent: { type: Boolean, default: false }
+  certificatesSent: { type: Boolean, default: false },
+  // Problem Resolution Event fields
+  isProblemResolution: {
+    type: Boolean,
+    default: false
+  },
+  relatedProblemId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Problem'
+  }
 }, {
   timestamps: true
 });

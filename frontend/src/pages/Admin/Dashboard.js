@@ -4,7 +4,8 @@ import {
   UsersIcon,
   CalendarIcon,
   ClockIcon,
-  CheckCircleIcon
+  CheckCircleIcon,
+  ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
 import VibrantPageLayout from '../../components/VibrantPageLayout';
 import anime from 'animejs/lib/anime.es.js';
@@ -79,6 +80,12 @@ const AdminDashboard = () => {
       value: stats?.totalEvents || 0,
       icon: CalendarIcon,
       color: 'bg-green-500'
+    },
+    {
+      title: 'Pending Problems',
+      value: stats?.pendingProblems || 0,
+      icon: ExclamationTriangleIcon,
+      color: 'bg-red-500'
     },
     {
       title: 'Total Participations',

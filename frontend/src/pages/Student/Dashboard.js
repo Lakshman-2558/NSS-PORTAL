@@ -6,7 +6,10 @@ import {
   CalendarIcon,
   ClockIcon,
   CheckCircleIcon,
-  DocumentTextIcon
+  DocumentTextIcon,
+  TrophyIcon,
+  SparklesIcon,
+  ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
 import VibrantPageLayout from '../../components/VibrantPageLayout';
 import anime from 'animejs/lib/anime.es.js';
@@ -153,10 +156,22 @@ const StudentDashboard = () => {
       color: 'bg-orange-500'
     },
     {
+      title: 'Reward Points',
+      value: user?.rewardPoints || 0,
+      icon: TrophyIcon,
+      color: 'bg-yellow-500'
+    },
+    {
       title: 'Events Participated',
       value: participations.filter(p => p.status !== 'rejected').length,
       icon: CalendarIcon,
       color: 'bg-blue-500'
+    },
+    {
+      title: 'Problems Reported',
+      value: user?.problemsApproved || 0,
+      icon: ExclamationTriangleIcon,
+      color: 'bg-red-500'
     },
     {
       title: 'Completed Events',
@@ -165,9 +180,9 @@ const StudentDashboard = () => {
       color: 'bg-green-500'
     },
     {
-      title: 'Certificate Eligible',
-      value: (user?.totalVolunteerHours || 0) >= 120 ? 'Yes' : 'No',
-      icon: DocumentTextIcon,
+      title: 'Badges Earned',
+      value: user?.badges?.length || 0,
+      icon: SparklesIcon,
       color: 'bg-purple-500'
     }
   ];
@@ -246,6 +261,27 @@ const StudentDashboard = () => {
               style={{opacity: 0}}
             >
               📅 Browse Events
+            </Link>
+            <Link
+              to="/student/report-problem"
+              className="action-card block w-full text-left px-5 py-3.5 bg-gradient-to-r from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 rounded-xl text-orange-700 font-medium transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md"
+              style={{opacity: 0}}
+            >
+              🚨 Report a Problem
+            </Link>
+            <Link
+              to="/student/my-problem-reports"
+              className="action-card block w-full text-left px-5 py-3.5 bg-gradient-to-r from-yellow-50 to-yellow-100 hover:from-yellow-100 hover:to-yellow-200 rounded-xl text-yellow-700 font-medium transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md"
+              style={{opacity: 0}}
+            >
+              📋 My Problem Reports
+            </Link>
+            <Link
+              to="/leaderboard"
+              className="action-card block w-full text-left px-5 py-3.5 bg-gradient-to-r from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-xl text-purple-700 font-medium transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md"
+              style={{opacity: 0}}
+            >
+              🏆 View Leaderboard
             </Link>
             <Link
               to="/student/profile"

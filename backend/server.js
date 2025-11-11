@@ -52,6 +52,7 @@ app.use('/api/notifications-api', require('./routes/notifications-api'));
 app.use('/api/certificates', require('./routes/certificates'));
 app.use('/api/ai-assistant', require('./routes/aiAssistant'));
 app.use('/api/stats', require('./routes/stats'));
+app.use('/api/problems', require('./routes/problemRoutes'));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/nss-portal', {

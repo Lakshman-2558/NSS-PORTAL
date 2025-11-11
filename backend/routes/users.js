@@ -51,6 +51,10 @@ router.get('/stats', [auth, authorize('admin', 'faculty')], async (req, res) => 
       { $match: { role: 'student' } },
       { $group: { _id: null, total: { $sum: '$totalVolunteerHours' } } }
     ]);
+    
+    // Get pending problems count
+    const Problem = require('../models/Problem');
+    const pendingProblems = await Problem.countDocuments({ status: 'pending' });
 
     res.json({
       totalStudents,
@@ -58,7 +62,8 @@ router.get('/stats', [auth, authorize('admin', 'faculty')], async (req, res) => 
       totalEvents,
       totalParticipations,
       totalContributions,
-      totalVolunteerHours: totalVolunteerHours[0]?.total || 0
+      totalVolunteerHours: totalVolunteerHours[0]?.total || 0,
+      pendingProblems
     });
   } catch (error) {
     console.error('Get stats error:', error);

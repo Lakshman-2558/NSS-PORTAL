@@ -50,6 +50,37 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Contribution'
   }],
+  // Rewards and Points System
+  rewardPoints: {
+    type: Number,
+    default: 0
+  },
+  reportingScore: {
+    type: Number,
+    default: 0
+  },
+  badges: [{
+    type: String,
+    enum: [
+      'First Reporter',
+      'Community Hero',
+      'Problem Solver',
+      'Change Maker',
+      'Eagle Eye',
+      'Active Reporter',
+      'Environmental Champion',
+      'Health Guardian',
+      'Infrastructure Inspector'
+    ]
+  }],
+  problemsReported: {
+    type: Number,
+    default: 0
+  },
+  problemsApproved: {
+    type: Number,
+    default: 0
+  },
   isActive: {
     type: Boolean,
     default: true
