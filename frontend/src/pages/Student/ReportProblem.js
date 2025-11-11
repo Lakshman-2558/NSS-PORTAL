@@ -131,7 +131,7 @@ const ReportProblem = () => {
 
     setLoading(true);
     try {
-      const response = await api.post('/problems', formData);
+      await api.post('/problems', formData);
       
       toast.success('Problem reported successfully! Waiting for admin approval.');
       
