@@ -1,7 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 
-// Firebase configuration - uses env vars in production, falls back to project values for local dev
+// Firebase configuration - Note: Firebase client keys are safe for public use
+// They are restricted by domain and have built-in security rules
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "AIzaSyDWPP4KxT5pBiKhlcisWlp7146Nq0yoMb4",
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || "nssnotify-efe66.firebaseapp.com",

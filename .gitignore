@@ -8,6 +8,23 @@ frontend/node_modules/
 .env.development.local
 .env.test.local
 .env.production.local
+.env.production
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+backend/.env
+backend/.env.local
+backend/.env.production
+
+# Firebase credentials
+*firebase-adminsdk*.json
+firebase-config.js
+firebase-credentials.json
+
+# API Keys and secrets
+*api-key*
+*secret*
+*credential*
 
 # Build outputs
 frontend/build/
