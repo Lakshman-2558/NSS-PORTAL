@@ -64,7 +64,7 @@ export const requestNotificationPermission = async () => {
     // Get FCM token
     if (messaging) {
       const token = await getToken(messaging, {
-        vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY || "YOUR_VAPID_KEY"
+        vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY || "BJ90JOZSFaV1fnpLj47sbadE-9DxxKlRzc456SJ0NRwUG_JPSiqHGCHv2Isy1ZwAro_fNKgGsVZpr9x14z2M80c"
       });
       console.log('FCM Token:', token);
       return token;
