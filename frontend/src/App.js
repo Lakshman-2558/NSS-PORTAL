@@ -25,6 +25,7 @@ import SubmitReport from './pages/Student/SubmitReport';
 import MyReports from './pages/Student/MyReports';
 import ReportProblem from './pages/Student/ReportProblem';
 import MyProblemReports from './pages/Student/MyProblemReports';
+import ProblemDetails from './pages/Student/ProblemDetails';
 import ProblemDashboard from './pages/Admin/ProblemDashboard';
 import Leaderboard from './pages/Leaderboard';
 import FacultyDashboard from './pages/Faculty/Dashboard';
@@ -60,135 +61,143 @@ function AppContent() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-            
-            {/* Admin Routes */}
-            <Route
-              path="/admin/dashboard"
-              element={
-                <PrivateRoute roles={['admin']}>
-                  <AdminDashboard />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/admin/events"
-              element={
-                <PrivateRoute roles={['admin']}>
-                  <AdminEvents />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/admin/participations"
-              element={
-                <PrivateRoute roles={['admin']}>
-                  <AdminParticipations />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/admin/reports"
-              element={
-                <PrivateRoute roles={['admin']}>
-                  <AdminReports />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/admin/certificates/:eventId"
-              element={
-                <PrivateRoute roles={['admin', 'faculty']}>
-                  <CertificateConfig />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/admin/ai-reports"
-              element={
-                <PrivateRoute roles={['admin', 'faculty']}>
-                  <AIReports />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/admin/problems"
-              element={
-                <PrivateRoute roles={['admin', 'faculty']}>
-                  <ProblemDashboard />
-                </PrivateRoute>
-              }
-            />
 
-            {/* Faculty Routes */}
-            <Route
-              path="/faculty/dashboard"
-              element={
-                <PrivateRoute roles={['faculty', 'admin']}>
-                  <FacultyDashboard />
-                </PrivateRoute>
-              }
-            />
+        {/* Admin Routes */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <PrivateRoute roles={['admin']}>
+              <AdminDashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/events"
+          element={
+            <PrivateRoute roles={['admin']}>
+              <AdminEvents />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/participations"
+          element={
+            <PrivateRoute roles={['admin']}>
+              <AdminParticipations />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/reports"
+          element={
+            <PrivateRoute roles={['admin']}>
+              <AdminReports />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/certificates/:eventId"
+          element={
+            <PrivateRoute roles={['admin', 'faculty']}>
+              <CertificateConfig />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/ai-reports"
+          element={
+            <PrivateRoute roles={['admin', 'faculty']}>
+              <AIReports />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/problems"
+          element={
+            <PrivateRoute roles={['admin', 'faculty']}>
+              <ProblemDashboard />
+            </PrivateRoute>
+          }
+        />
 
-            {/* Student Routes */}
-            <Route
-              path="/student/dashboard"
-              element={
-                <PrivateRoute roles={['student']}>
-                  <StudentDashboard />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/student/events"
-              element={
-                <PrivateRoute roles={['student']}>
-                  <StudentEvents />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/student/profile"
-              element={
-                <PrivateRoute roles={['student']}>
-                  <StudentProfile />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/student/submit-report/:eventId"
-              element={
-                <PrivateRoute roles={['student']}>
-                  <SubmitReport />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/student/my-reports"
-              element={
-                <PrivateRoute roles={['student']}>
-                  <MyReports />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/student/report-problem"
-              element={
-                <PrivateRoute roles={['student']}>
-                  <ReportProblem />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/student/my-problem-reports"
-              element={
-                <PrivateRoute roles={['student']}>
-                  <MyProblemReports />
-                </PrivateRoute>
-              }
-            />
+        {/* Faculty Routes */}
+        <Route
+          path="/faculty/dashboard"
+          element={
+            <PrivateRoute roles={['faculty', 'admin']}>
+              <FacultyDashboard />
+            </PrivateRoute>
+          }
+        />
 
-            {/* Public Leaderboard */}
-            <Route path="/leaderboard" element={<Leaderboard />} />
+        {/* Student Routes */}
+        <Route
+          path="/student/dashboard"
+          element={
+            <PrivateRoute roles={['student']}>
+              <StudentDashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/student/events"
+          element={
+            <PrivateRoute roles={['student']}>
+              <StudentEvents />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/student/profile"
+          element={
+            <PrivateRoute roles={['student']}>
+              <StudentProfile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/student/submit-report/:eventId"
+          element={
+            <PrivateRoute roles={['student']}>
+              <SubmitReport />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/student/my-reports"
+          element={
+            <PrivateRoute roles={['student']}>
+              <MyReports />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/student/report-problem"
+          element={
+            <PrivateRoute roles={['student']}>
+              <ReportProblem />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/student/my-problem-reports"
+          element={
+            <PrivateRoute roles={['student']}>
+              <MyProblemReports />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/student/problems/:id"
+          element={
+            <PrivateRoute roles={['student']}>
+              <ProblemDetails />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Public Leaderboard */}
+        <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
       <Toaster position="top-right" />
     </div>

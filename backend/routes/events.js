@@ -6,6 +6,7 @@ const User = require('../models/User');
 const Notification = require('../models/Notification');
 const { auth, authorize } = require('../middleware/auth');
 const { sendNewEventNotification } = require('../utils/notifications');
+const { notifyAllStudents } = require('../utils/notificationHelper');
 
 const router = express.Router();
 
@@ -151,6 +152,25 @@ router.post('/', [
                 timestamp: new Date()
               });
             });
+          }
+
+          // Send push notifications to all students
+          try {
+            const studentIds = students.map(s => s._id);
+            await notifyAllStudents(
+              'new-event',
+              `📅 New Event: ${event.title}`,
+              {
+                eventId: event._id.toString(),
+                eventTitle: event.title,
+                eventType: event.eventType,
+                location: event.location,
+                startDate: event.startDate
+              }
+            );
+            console.log(`✅ Push notifications sent to ${studentIds.length} students`);
+          } catch (error) {
+            console.error('Error sending push notifications:', error);
           }
         }
       } catch (error) {

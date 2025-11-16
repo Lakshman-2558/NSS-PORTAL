@@ -1,0 +1,12 @@
+Add this to your package.json scripts section:
+
+"scripts": {
+  ...existing scripts...
+  "migrate-certificates": "node scripts/migrate-certificates-to-cloudinary.js"
+}
+
+Then run:
+npm run migrate-certificates
+
+Or directly:
+node scripts/migrate-certificates-to-cloudinary.js

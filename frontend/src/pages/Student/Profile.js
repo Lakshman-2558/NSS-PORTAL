@@ -4,12 +4,14 @@ import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 import { DocumentArrowDownIcon, PlusIcon } from '@heroicons/react/24/outline';
 import ContributionForm from '../../components/Student/ContributionForm';
+import { downloadCertificate } from '../../utils/downloadHelper';
 import anime from 'animejs/lib/anime.es.js';
 
 const StudentProfile = () => {
   const [profile, setProfile] = useState(null);
   const [contributions, setContributions] = useState([]);
   const [participations, setParticipations] = useState([]);
+  const [certificates, setCertificates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showContributionForm, setShowContributionForm] = useState(false);
   const [selectedParticipation, setSelectedParticipation] = useState(null);
@@ -34,7 +36,7 @@ const StudentProfile = () => {
         targets: '.contribution-item',
         scale: [0.8, 1],
         opacity: [0, 1],
-        delay: anime.stagger(80, {start: 400}),
+        delay: anime.stagger(80, { start: 400 }),
         duration: 500,
         easing: 'easeOutQuad'
       });
@@ -50,10 +52,19 @@ const StudentProfile = () => {
       ]);
       setProfile(profileRes.data);
       setContributions(profileRes.data.contributions || []);
-      setParticipations(participationsRes.data.filter(p => 
-        (p.status === 'attended' || p.status === 'approved') && 
+      setParticipations(participationsRes.data.filter(p =>
+        (p.status === 'attended' || p.status === 'approved') &&
         !profileRes.data.contributions?.some(c => c.participation?._id === p._id)
       ));
+
+      // Fetch certificates
+      try {
+        const certificatesRes = await api.get('/certificates/my-certificates');
+        setCertificates(certificatesRes.data);
+      } catch (certError) {
+        console.error('Failed to fetch certificates:', certError);
+        setCertificates([]);
+      }
     } catch (error) {
       toast.error('Failed to fetch profile');
     } finally {
@@ -61,25 +72,12 @@ const StudentProfile = () => {
     }
   };
 
-  const downloadCertificate = async (participationId) => {
-    try {
-      // Extract ID if it's an object
-      const id = typeof participationId === 'object' ? participationId._id : participationId;
-      
-      const response = await api.get(`/reports/certificate/${id}`, {
-        responseType: 'blob'
-      });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `certificate-${id}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      toast.success('Certificate downloaded');
-    } catch (error) {
-      toast.error('Failed to download certificate');
-    }
+  const handleViewCertificate = (certUrl) => {
+    window.open(certUrl, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleDownloadCertificate = (cert) => {
+    downloadCertificate(cert);
   };
 
   const handleSubmitContribution = (participation) => {
@@ -180,7 +178,7 @@ const StudentProfile = () => {
               </div>
             )}
 
-            <div className="bg-white shadow rounded-lg p-6">
+            <div className="bg-white shadow rounded-lg p-6 mb-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Contributions</h2>
               <div className="space-y-4">
                 {contributions.map((contribution) => (
@@ -206,21 +204,61 @@ const StudentProfile = () => {
                       </div>
                     </div>
                     <p className="text-sm text-gray-600 mb-2">{contribution.report}</p>
-                    {contribution.participation && (
-                      <button
-                        onClick={() => downloadCertificate(typeof contribution.participation === 'object' ? contribution.participation._id : contribution.participation)}
-                        className="inline-flex items-center px-3 py-1 text-sm font-medium text-primary-600 hover:text-primary-700"
-                      >
-                        <DocumentArrowDownIcon className="h-4 w-4 mr-1" />
-                        Download Certificate
-                      </button>
-                    )}
                   </div>
                 ))}
                 {contributions.length === 0 && (
                   <p className="text-gray-500 text-center py-8">No contributions yet</p>
                 )}
               </div>
+            </div>
+
+            {/* My Certificates Section */}
+            <div className="bg-white shadow rounded-lg p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">My Certificates</h2>
+              {certificates.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {certificates.map((cert) => (
+                    <div key={cert.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-gray-900 mb-1">
+                            {cert.event.title}
+                          </h3>
+                          <p className="text-xs text-gray-500">
+                            {format(new Date(cert.event.startDate), 'MMM d')} - {format(new Date(cert.event.endDate), 'MMM d, yyyy')}
+                          </p>
+                          <p className="text-xs text-gray-400 mt-1">
+                            Issued: {format(new Date(cert.certificate.generatedAt), 'MMM d, yyyy')}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2 mt-3">
+                        <button
+                          onClick={() => handleViewCertificate(cert.certificate.url)}
+                          className="flex-1 px-3 py-2 bg-primary-600 text-white text-sm font-medium rounded-md hover:bg-primary-700 transition-colors"
+                        >
+                          View
+                        </button>
+                        <button
+                          onClick={() => handleDownloadCertificate(cert)}
+                          className="flex-1 px-3 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors flex items-center justify-center gap-1"
+                        >
+                          <DocumentArrowDownIcon className="h-4 w-4" />
+                          Download
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <DocumentArrowDownIcon className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500">No certificates yet</p>
+                  <p className="text-gray-400 text-sm mt-1">
+                    Certificates will appear here once events are completed and issued.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -84,6 +84,51 @@ const userSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true
+  },
+  // Push Notification Device Tokens
+  deviceTokens: [{
+    token: {
+      type: String,
+      required: true,
+      unique: true,
+      sparse: true
+    },
+    deviceType: {
+      type: String,
+      enum: ['web', 'android', 'ios'],
+      default: 'web'
+    },
+    deviceName: String,
+    isActive: {
+      type: Boolean,
+      default: true
+    },
+    registeredAt: {
+      type: Date,
+      default: Date.now
+    },
+    lastUsedAt: {
+      type: Date,
+      default: Date.now
+    }
+  }],
+  notificationPreferences: {
+    eventNotifications: {
+      type: Boolean,
+      default: true
+    },
+    participationUpdates: {
+      type: Boolean,
+      default: true
+    },
+    certificateNotifications: {
+      type: Boolean,
+      default: true
+    },
+    systemNotifications: {
+      type: Boolean,
+      default: true
+    }
   }
 }, {
   timestamps: true

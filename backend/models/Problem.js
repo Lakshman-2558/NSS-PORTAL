@@ -115,28 +115,30 @@ problemSchema.index({ category: 1 });
 problemSchema.index({ createdAt: -1 });
 
 // Virtual for checking if problem is public
-problemSchema.virtual('isPublic').get(function() {
+problemSchema.virtual('isPublic').get(function () {
   return this.visibility === 'public' && this.status === 'approved';
 });
 
 // Method to check if user can view this problem
-problemSchema.methods.canBeViewedBy = function(userId, userRole) {
+problemSchema.methods.canBeViewedBy = function (userId, userRole) {
   // Admin can view all
   if (userRole === 'admin' || userRole === 'faculty') {
     return true;
   }
-  
+
   // Reporter can view their own
-  if (this.reportedBy.toString() === userId.toString()) {
+  // Handle both populated and non-populated reportedBy
+  const reporterId = this.reportedBy._id || this.reportedBy;
+  if (reporterId.toString() === userId.toString()) {
     return true;
   }
-  
+
   // Others can only view public/approved problems
   return this.visibility === 'public' && this.status === 'approved';
 };
 
 // Static method to get problems visible to a user
-problemSchema.statics.getVisibleProblems = function(userId, userRole) {
+problemSchema.statics.getVisibleProblems = function (userId, userRole) {
   if (userRole === 'admin' || userRole === 'faculty') {
     // Admin sees all
     return this.find();

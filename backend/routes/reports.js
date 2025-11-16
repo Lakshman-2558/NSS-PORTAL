@@ -531,7 +531,7 @@ router.get('/student/my-reports', auth, async (req, res) => {
 router.get('/admin/all', [auth, authorize('admin', 'faculty')], async (req, res) => {
   try {
     const { eventId, academicYear, status } = req.query;
-    
+
     const query = {};
     if (eventId) query.event = eventId;
     if (academicYear) query.academicYear = academicYear;

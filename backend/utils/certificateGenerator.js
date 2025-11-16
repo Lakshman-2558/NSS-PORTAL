@@ -2,9 +2,11 @@ const { createCanvas, loadImage } = require('canvas');
 const fs = require('fs').promises;
 const path = require('path');
 const brevo = require('@getbrevo/brevo');
+const cloudinary = require('../config/cloudinary');
 const Event = require('../models/Event');
 const Participation = require('../models/Participation');
 const Notification = require('../models/Notification');
+const { notifyUser } = require('./notificationHelper');
 
 // Configure Brevo API client for certificate emails
 let apiInstance = null;
@@ -31,35 +33,35 @@ if (process.env.BREVO_API_KEY) {
 async function generateCertificate(event, student, templatePath) {
   try {
     console.log('📄 Generating certificate with template:', templatePath);
-    
+
     // Check if file exists
     try {
       await fs.access(templatePath);
     } catch (err) {
       throw new Error(`Template file not found at: ${templatePath}`);
     }
-    
+
     // Load the template image
     console.log('📷 Loading image...');
     const image = await loadImage(templatePath);
     console.log(`✅ Image loaded: ${image.width}x${image.height}`);
-    
+
     // Create canvas with same dimensions as template
     const canvas = createCanvas(image.width, image.height);
     const ctx = canvas.getContext('2d');
-    
+
     // Draw the template image
     ctx.drawImage(image, 0, 0);
-    
+
     // Format date
     const formatDate = (date) => {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
       return new Date(date).toLocaleDateString('en-US', options);
     };
-    
+
     // Set text alignment to center
     ctx.textAlign = 'center';
-    
+
     // Draw student name
     if (event.certificate.fields.name && event.certificate.fields.name.x !== undefined) {
       const nameFont = event.certificate.fields.name.fontFamily || 'Arial';
@@ -67,7 +69,7 @@ async function generateCertificate(event, student, templatePath) {
       ctx.fillStyle = event.certificate.fields.name.color || '#000000';
       ctx.fillText(student.name || '', event.certificate.fields.name.x, event.certificate.fields.name.y);
     }
-    
+
     // Draw event name
     if (event.certificate.fields.eventName && event.certificate.fields.eventName.x !== undefined) {
       const eventFont = event.certificate.fields.eventName.fontFamily || 'Arial';
@@ -75,7 +77,7 @@ async function generateCertificate(event, student, templatePath) {
       ctx.fillStyle = event.certificate.fields.eventName.color || '#000000';
       ctx.fillText(event.title || '', event.certificate.fields.eventName.x, event.certificate.fields.eventName.y);
     }
-    
+
     // Draw date (format: Start Date - End Date)
     if (event.certificate.fields.date && event.certificate.fields.date.x !== undefined) {
       const dateFont = event.certificate.fields.date.fontFamily || 'Arial';
@@ -86,7 +88,7 @@ async function generateCertificate(event, student, templatePath) {
       const dateText = `${startDate} - ${endDate}`;
       ctx.fillText(dateText, event.certificate.fields.date.x, event.certificate.fields.date.y);
     }
-    
+
     // Return PNG buffer
     return canvas.toBuffer('image/png');
   } catch (error) {
@@ -104,9 +106,19 @@ async function generateCertificate(event, student, templatePath) {
  */
 async function sendCertificateEmail(student, event, certificateBuffer) {
   try {
+    console.log(`📧 Attempting to send certificate email to ${student.email}`);
+    console.log(`   Brevo configured: ${isBrevoConfigured}`);
+    console.log(`   API Instance: ${apiInstance ? 'Available' : 'Not available'}`);
+
     if (!isBrevoConfigured) {
       console.log('⚠️ Brevo not configured. Skipping certificate email.');
+      console.log('   Please check BREVO_API_KEY in .env file');
       return { success: false, message: 'Brevo not configured' };
+    }
+
+    if (!student.email) {
+      console.log(`⚠️ Student ${student.name} has no email address`);
+      return { success: false, message: 'Student has no email address' };
     }
 
     const senderEmail = process.env.BREVO_SENDER_EMAIL || process.env.EMAIL_USER || 'noreply@nssportal.com';
@@ -136,23 +148,33 @@ async function sendCertificateEmail(student, event, certificateBuffer) {
     sendSmtpEmail.to = [{ email: student.email, name: student.name }];
     sendSmtpEmail.subject = `Certificate for ${event.title}`;
     sendSmtpEmail.htmlContent = htmlContent;
-    
+
     // Add certificate as attachment (base64 encoded)
     sendSmtpEmail.attachment = [{
       name: `Certificate_${student.name.replace(/\s+/g, '_')}_${event.title.replace(/\s+/g, '_')}.png`,
       content: certificateBuffer.toString('base64')
     }];
 
-    console.log(`📧 Sending certificate to ${student.email}...`);
+    console.log(`📧 Sending certificate email via Brevo to ${student.email}...`);
+    console.log(`   Sender: ${senderName} <${senderEmail}>`);
+    console.log(`   Subject: Certificate for ${event.title}`);
+    console.log(`   Attachment size: ${certificateBuffer.length} bytes`);
+
     const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
-    console.log(`✅ Certificate sent to ${student.email}. Message ID: ${data.messageId}`);
+    console.log(`✅ Certificate email sent successfully to ${student.email}`);
+    console.log(`   Message ID: ${data.messageId}`);
     return { success: true, messageId: data.messageId };
   } catch (error) {
-    console.error(`❌ Failed to send certificate to ${student.email}:`, error.message);
+    console.error(`❌ Failed to send certificate email to ${student.email}`);
+    console.error(`   Error: ${error.message}`);
     if (error.response) {
-      console.error('   Response:', error.response.text);
+      console.error('   Response status:', error.response.status);
+      console.error('   Response body:', error.response.text || error.response.body);
     }
-    return { success: false, error: error.message };
+    if (error.body) {
+      console.error('   Error body:', JSON.stringify(error.body, null, 2));
+    }
+    return { success: false, error: error.message, details: error.response?.text };
   }
 }
 
@@ -177,7 +199,7 @@ async function sendCertificateNotification(student, event, io) {
       },
       read: false
     });
-    
+
     // Send real-time notification if socket.io is available
     if (io) {
       const notificationData = {
@@ -189,10 +211,27 @@ async function sendCertificateNotification(student, event, io) {
         },
         timestamp: new Date()
       };
-      
+
       io.to(`user-${student._id.toString()}`).emit('certificate-ready', notificationData);
     }
-    
+
+    // Send push notification
+    try {
+      await notifyUser(
+        student._id,
+        'certificate-issued',
+        `🏆 Your certificate for "${event.title}" is ready!`,
+        {
+          eventId: event._id.toString(),
+          eventTitle: event.title,
+          certificateAvailable: true
+        }
+      );
+      console.log(`📱 Push notification sent to ${student.name}`);
+    } catch (error) {
+      console.error(`❌ Failed to send push notification to ${student.name}:`, error.message);
+    }
+
     console.log(`✅ In-app notification sent to ${student.name}`);
   } catch (error) {
     console.error(`❌ Failed to send notification to ${student.name}:`, error.message);
@@ -208,38 +247,38 @@ async function sendCertificateNotification(student, event, io) {
 async function generateAndSendCertificates(eventId, io = null) {
   try {
     console.log(`\n📜 ===== GENERATING CERTIFICATES FOR EVENT: ${eventId} =====`);
-    
+
     // Fetch event with full details
     const event = await Event.findById(eventId).populate('organizer', 'name email');
-    
+
     if (!event) {
       throw new Error('Event not found');
     }
-    
+
     // Check if certificate template is configured
     if (!event.certificate || !event.certificate.templateUrl) {
       throw new Error('Certificate template not configured for this event');
     }
-    
+
     // Check if certificates already sent
     if (event.certificatesSent) {
       console.log('⚠️ Certificates already sent for this event');
       return { success: false, message: 'Certificates already sent' };
     }
-    
+
     // Fetch all attended/completed participations
     const participations = await Participation.find({
       event: eventId,
       status: { $in: ['attended', 'completed'] }
     }).populate('student', 'name email studentId');
-    
+
     if (participations.length === 0) {
       console.log('⚠️ No participated students found');
       return { success: false, message: 'No students to send certificates to' };
     }
-    
+
     console.log(`📋 Found ${participations.length} students to receive certificates`);
-    
+
     // Get template image path
     let templatePath;
     if (event.certificate.templateUrl.startsWith('http')) {
@@ -257,51 +296,62 @@ async function generateAndSendCertificates(eventId, io = null) {
         : event.certificate.templateUrl;
       templatePath = path.join(__dirname, '..', templateRel);
     }
-    
+
     const results = {
       total: participations.length,
       successful: 0,
       failed: 0,
       errors: []
     };
-    
+
     // Generate and send certificates
     for (const participation of participations) {
       try {
         const student = participation.student;
         console.log(`\n📄 Generating certificate for: ${student.name} (${student.email})`);
-        
+
         // Generate certificate
         const certificateBuffer = await generateCertificate(event, student, templatePath);
-        
-        // Save certificate to uploads folder
-        const certFileName = `cert_${student._id}_${event._id}_${Date.now()}.png`;
-        const certPath = path.join(__dirname, '..', 'uploads', 'certificates', 'generated', certFileName);
-        await fs.mkdir(path.dirname(certPath), { recursive: true });
-        await fs.writeFile(certPath, certificateBuffer);
-        
-        // Use full URL for production deployment
-        const baseUrl = process.env.BACKEND_URL || 'http://localhost:5000';
-        const certUrl = `${baseUrl}/uploads/certificates/generated/${certFileName}`;
-        
+
+        // Upload certificate to Cloudinary for production-ready storage
+        console.log(`☁️ Uploading certificate to Cloudinary for ${student.name}...`);
+        const base64Certificate = certificateBuffer.toString('base64');
+        const dataUri = `data:image/png;base64,${base64Certificate}`;
+
+        const uploadResult = await cloudinary.uploader.upload(dataUri, {
+          folder: 'nss-certificates',
+          public_id: `cert_${student._id}_${event._id}_${Date.now()}`,
+          resource_type: 'image',
+          format: 'png'
+        });
+
+        const certUrl = uploadResult.secure_url;
+        const certPublicId = uploadResult.public_id;
+        console.log(`✅ Certificate uploaded to Cloudinary: ${certUrl}`);
+
+        // Update participation with certificate URL and publicId FIRST (before sending email)
+        // This ensures the certificate is accessible even if email fails
+        await Participation.findOneAndUpdate(
+          { student: student._id, event: event._id },
+          {
+            certificate: {
+              url: certUrl,
+              publicId: certPublicId,
+              generatedAt: new Date()
+            }
+          }
+        );
+        console.log(`💾 Certificate URL saved to database for ${student.name}`);
+        console.log(`   Cloudinary URL: ${certUrl}`);
+        console.log(`   Public ID: ${certPublicId}`);
+
         // Send via email
         const emailResult = await sendCertificateEmail(student, event, certificateBuffer);
-        
+
         // Send in-app notification
         await sendCertificateNotification(student, event, io);
-        
+
         if (emailResult.success) {
-          // Update participation with certificate URL
-          await Participation.findOneAndUpdate(
-            { student: student._id, event: event._id },
-            { 
-              certificate: {
-                url: certUrl,
-                generatedAt: new Date()
-              }
-            }
-          );
-          
           results.successful++;
           console.log(`✅ Certificate successfully sent to ${student.name}`);
         } else {
@@ -309,13 +359,14 @@ async function generateAndSendCertificates(eventId, io = null) {
           results.errors.push({
             student: student.name,
             email: student.email,
-            error: emailResult.error
+            error: emailResult.error || emailResult.message
           });
+          console.log(`⚠️ Certificate generated but email failed for ${student.name}`);
         }
-        
+
         // Small delay to avoid rate limiting
         await new Promise(resolve => setTimeout(resolve, 500));
-        
+
       } catch (error) {
         results.failed++;
         results.errors.push({
@@ -326,22 +377,22 @@ async function generateAndSendCertificates(eventId, io = null) {
         console.error(`❌ Error processing certificate for ${participation.student.name}:`, error.message);
       }
     }
-    
+
     // Mark certificates as sent
     event.certificatesSent = true;
     await event.save();
-    
+
     console.log(`\n📊 Certificate Generation Summary:`);
     console.log(`   ✅ Successful: ${results.successful}`);
     console.log(`   ❌ Failed: ${results.failed}`);
     console.log(`   📧 Total: ${results.total}`);
     console.log(`\n📜 ===== CERTIFICATE GENERATION COMPLETE =====\n`);
-    
+
     return {
       success: true,
       ...results
     };
-    
+
   } catch (error) {
     console.error('❌ Certificate generation error:', error);
     throw error;

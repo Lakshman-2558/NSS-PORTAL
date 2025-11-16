@@ -5,6 +5,7 @@ const User = require('../models/User');
 const Notification = require('../models/Notification');
 const { auth, authorize } = require('../middleware/auth');
 const { sendRegistrationConfirmation, sendApprovalNotification } = require('../utils/notifications');
+const { notifyUser } = require('../utils/notificationHelper');
 
 const router = express.Router();
 
@@ -163,6 +164,24 @@ router.put('/:id/approve', [auth, authorize('admin', 'faculty')], async (req, re
       console.warn('⚠️ Student has no email address, skipping email notification');
     }
 
+    // Send push notification to the approved student
+    try {
+      await notifyUser(
+        participation.student._id,
+        'participation-approved',
+        `✅ Your participation for "${participation.event.title}" has been approved!`,
+        {
+          participationId: participation._id.toString(),
+          eventId: participation.event._id.toString(),
+          eventTitle: participation.event.title,
+          eventDate: participation.event.startDate
+        }
+      );
+      console.log(`📱 Push notification sent to student ${participation.student._id}`);
+    } catch (error) {
+      console.error('❌ Error sending push notification:', error);
+    }
+
     // Send WebSocket notification to the approved student
     try {
       const io = req.app.get('io');
@@ -255,6 +274,24 @@ router.put('/:id/reject', [auth, authorize('admin', 'faculty')], async (req, res
 
     await participation.populate('student', 'name email studentId');
     await participation.populate('event', 'title eventType');
+
+    // Send push notification to rejected student
+    try {
+      await notifyUser(
+        participation.student._id,
+        'participation-rejected',
+        `❌ Your participation for "${participation.event.title}" was not approved.`,
+        {
+          participationId: participation._id.toString(),
+          eventId: participation.event._id.toString(),
+          eventTitle: participation.event.title,
+          reason: req.body.reason || 'No reason provided'
+        }
+      );
+      console.log(`📱 Rejection notification sent to student ${participation.student._id}`);
+    } catch (error) {
+      console.error('❌ Error sending rejection notification:', error);
+    }
 
     res.json(participation);
   } catch (error) {

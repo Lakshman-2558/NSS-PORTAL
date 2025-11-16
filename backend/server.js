@@ -1,9 +1,22 @@
+// Suppress punycode deprecation warning (coming from dependencies, not our code)
+process.on('warning', (warning) => {
+  if (warning.name === 'DeprecationWarning' && warning.message.includes('punycode')) {
+    // Suppress this specific warning - it's from dependencies (mongoose, brevo)
+    return;
+  }
+  // Allow other warnings to be displayed
+  console.warn(warning.name, warning.message);
+});
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 const http = require('http');
+
+// Import Firebase service
+const { initializeFirebase } = require('./services/firebaseService');
 
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, '.env') });
@@ -16,6 +29,9 @@ console.log(`   Brevo API Key: ${process.env.BREVO_API_KEY ? '✅ Set (***' + pr
 console.log(`   Brevo Sender: ${process.env.BREVO_SENDER_EMAIL ? '✅ ' + process.env.BREVO_SENDER_EMAIL : '⚠️ Not set'}`);
 console.log(`   Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:3000'}`);
 console.log('');
+
+// Initialize Firebase for push notifications
+initializeFirebase();
 
 const app = express();
 const server = http.createServer(app);
@@ -53,14 +69,18 @@ app.use('/api/certificates', require('./routes/certificates'));
 app.use('/api/ai-assistant', require('./routes/aiAssistant'));
 app.use('/api/stats', require('./routes/stats'));
 app.use('/api/problems', require('./routes/problemRoutes'));
+app.use('/api/push-notifications', require('./routes/pushNotifications'));
+
+// Make io accessible globally for notification helper
+global.io = io;
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/nss-portal', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log('MongoDB Connected'))
-.catch(err => console.error('MongoDB Connection Error:', err));
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.error('MongoDB Connection Error:', err));
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -77,7 +97,7 @@ io.on('connection', (socket) => {
     const roomName = `user-${userId}`;
     socket.join(roomName);
     console.log(`👤 User ${userId} joined room: ${roomName}`);
-    
+
     // Send confirmation
     socket.emit('room-joined', { room: roomName, userId });
   });

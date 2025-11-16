@@ -1,0 +1,288 @@
+/* Notification Preferences Styles */
+
+.notification-preferences {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.notification-header {
+  margin-bottom: 30px;
+}
+
+.notification-header h3 {
+  font-size: 24px;
+  margin: 0 0 8px 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.notification-header .subtitle {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Status Section */
+
+.notification-status {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  border-left: 4px solid #007bff;
+}
+
+.status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.status-item:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.status-label {
+  font-weight: 500;
+  color: #555;
+}
+
+.status-value {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status-granted {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-denied {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status-default {
+  background: #e7e7ff;
+  color: #004085;
+}
+
+/* Preferences Section */
+
+.preferences-section {
+  margin-bottom: 25px;
+}
+
+.preferences-section h4 {
+  font-size: 18px;
+  margin: 0 0 8px 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.section-subtitle {
+  color: #666;
+  font-size: 14px;
+  margin: 0 0 15px 0;
+}
+
+.preference-item {
+  padding: 12px;
+  margin-bottom: 12px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.preference-item:hover {
+  background: #f0f7ff;
+  border-color: #007bff;
+}
+
+.preference-label {
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 8px;
+}
+
+.preference-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  margin-top: 2px;
+  cursor: pointer;
+  accent-color: #007bff;
+}
+
+.preference-label input[type="checkbox"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.checkbox-label .icon {
+  font-size: 16px;
+  margin-right: 8px;
+  min-width: 24px;
+}
+
+.checkbox-label .text {
+  font-weight: 500;
+  color: #333;
+}
+
+.preference-description {
+  margin: 0 0 0 32px;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* Alert Styles */
+
+.alert {
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border-left: 4px solid #ccc;
+}
+
+.alert p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.alert p:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.alert .small {
+  font-size: 12px;
+  color: inherit;
+  opacity: 0.9;
+}
+
+.alert-warning {
+  background: #fff3cd;
+  border-color: #ffc107;
+  color: #856404;
+}
+
+.alert-danger {
+  background: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+.alert-info {
+  background: #d1ecf1;
+  border-color: #bee5eb;
+  color: #0c5460;
+}
+
+/* Info Box */
+
+.info-box {
+  background: #e7f3ff;
+  border-left: 4px solid #0066cc;
+  padding: 15px;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+
+.info-box h5 {
+  margin: 0 0 10px 0;
+  color: #004085;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.info-box ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #004085;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.info-box li {
+  margin-bottom: 6px;
+}
+
+/* Loading Indicator */
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  color: #666;
+  font-size: 14px;
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+
+@media (max-width: 480px) {
+  .notification-preferences {
+    padding: 15px;
+  }
+
+  .notification-header h3 {
+    font-size: 20px;
+  }
+
+  .status-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .status-label {
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .preference-label {
+    align-items: center;
+  }
+
+  .checkbox-label {
+    flex-wrap: wrap;
+  }
+
+  .checkbox-label .icon {
+    width: 100%;
+    font-size: 20px;
+    margin: 0 0 8px 0;
+  }
+}
