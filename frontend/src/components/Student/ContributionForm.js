@@ -24,8 +24,8 @@ const ContributionForm = ({ participation, onClose, onSuccess }) => {
       // Handle both Cloudinary URLs and local file URLs
       let fileUrl = response.data.url;
       if (fileUrl.startsWith('/uploads/')) {
-        // Local file - prepend API base URL
-        fileUrl = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${fileUrl}`;
+        // Local file - prepend production backend URL
+        fileUrl = `${process.env.REACT_APP_API_URL || 'https://nss-portal-backend.onrender.com'}${fileUrl}`;
       }
 
       const newEvidence = {
@@ -129,7 +129,7 @@ const ContributionForm = ({ participation, onClose, onSuccess }) => {
               Volunteer Hours *
             </label>
             <input
-              {...register('volunteerHours', { 
+              {...register('volunteerHours', {
                 required: 'Volunteer hours are required',
                 min: { value: 0.5, message: 'Must be at least 0.5 hours' },
                 max: { value: 24, message: 'Cannot exceed 24 hours per day' }

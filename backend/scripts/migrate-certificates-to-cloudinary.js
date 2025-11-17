@@ -16,6 +16,8 @@ const fs = require('fs').promises;
 const path = require('path');
 const cloudinary = require('../config/cloudinary');
 const Participation = require('../models/Participation');
+const User = require('../models/User');
+const Event = require('../models/Event');
 
 async function migrateCertificatesToCloudinary() {
     try {
